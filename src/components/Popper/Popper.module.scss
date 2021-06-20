@@ -1,0 +1,27 @@
+.wrapper {
+    padding: 12px;
+    background-color: #fff;
+    border-radius: 8px;
+    filter: drop-shadow(rgba(0, 0, 0, 0.16) 0 4px 16px);
+}
+
+.menuItem {
+    font-size: 1.4rem;
+    padding: 8px;
+    display: block;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(22, 24, 35, 0.03);
+    }
+}
+
+.icon {
+    margin-right: 12px;
+    font-size: 1.6rem;
+    color: #404040;
+}
+
+.seperate {
+    border-bottom: 1px solid rgba(22, 24, 35, 0.1);
+}
