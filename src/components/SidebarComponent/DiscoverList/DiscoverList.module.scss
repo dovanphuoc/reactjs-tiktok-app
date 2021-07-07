@@ -1,0 +1,42 @@
+.discover {
+    padding: 16px 8px 8px 8px;
+    border-bottom: 1px solid rgba(22, 24, 35, 0.12);
+    .discoverTitle {
+        font-weight: 600;
+        padding-bottom: 16px;
+        font-size: 1.4rem;
+        line-height: 20px;
+        color: rgba(22,24,35,0.75);
+    }
+}
+
+.icon {
+    font-size: 2rem;
+    color: #333;
+}
+
+.itemText {
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.4rem;
+    line-height: 18px;
+    color: rgba(22, 24, 35, 0.75);
+    padding-left: 6px;
+}
+
+.discoverItem {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    height: 24px;
+    margin-bottom: 12px;
+    padding: 3px 10px;
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    border-radius: 12px;
+    background: rgb(255, 255, 255);
+    transition: all 200ms ease 0s;
+    margin-right: 8px;
+}
+

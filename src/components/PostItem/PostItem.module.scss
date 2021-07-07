@@ -1,0 +1,136 @@
+.postItem {
+    position: relative;
+    padding: 100px 0 20px;
+    border-bottom: 0.5px solid rgba(22, 24, 35, 0.12);
+    .userAvatar {
+        float: left;
+        position: relative;
+        cursor: pointer;
+        .avatarImg {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+    .postContent {
+        position: relative;
+        margin-left: 68px; 
+        .infoContent {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: flex;
+            flex-flow: wrap;
+            .authorUnique,
+            .fullName {
+                font-size: 18px;
+                line-height: 24px;
+                margin-bottom: 0px;
+            }
+            .authorUnique {
+                margin-right: 4px;
+                font-weight: 600;
+            }
+            .fullName {
+                font-weight: 400;
+            }
+        }
+        .caption {
+            strong {
+                color: #121212;
+                font-size: 1.6rem;
+                font-weight: normal;
+                display: block;
+                margin-bottom: 12px;
+            }
+        }
+        .btnFollow {
+            position: absolute;
+            right: 0;
+            top: 8px;
+        }
+        .videoItem {
+            position: relative;
+            display: inline-block;
+            .cardWrapper {
+                .cardImage {
+                    position: relative;
+                    display: flex;
+                    width: 100%;
+                    height: 100%;
+                    overflow: hidden;
+                    background: rgb(22, 24, 35);
+                    border-radius: 8px;
+                    -webkit-box-pack: center;
+                    justify-content: center;
+                    .overlay {
+                        position: absolute;
+                        left: 0px;
+                        right: 0px;
+                        bottom: 0px;
+                        height: 200px;
+                        pointer-events: none;
+                        background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+                    }
+                    .muteIcon {
+                        .icon {
+                            cursor: pointer;
+                            position: absolute;
+                            bottom: 45px;
+                            right: 30px;
+                            font-size: 3.5rem;
+                            path {
+                                stroke: #fff;
+                            }
+                        }
+                    }
+                    .toggleIcon {
+                        cursor: pointer;
+                        position: absolute;
+                        left: 30px;
+                        bottom: 48px;
+                        font-size: 2rem;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+    .iconAction {
+        position: absolute;
+        right: 0px;
+        bottom: 0px;
+        .itemWrapper {
+            text-align: center;
+        }
+        .barItem {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: rgba(22, 24, 35, 0.06);
+            padding: 12px;
+            margin-top: 8px;
+            transition: .3s ease all;
+            cursor: pointer;
+            &:hover {
+                background: rgba(22, 24, 35, 0.2);
+            }
+            .icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                font-size: 1.6rem;
+                color: #000;
+            }
+        }
+        strong {
+            font-size: 1.3rem;
+            margin-top: 8px;
+            display: block;
+            color: #161823bf;
+        }
+    }
+}

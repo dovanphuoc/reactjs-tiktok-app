@@ -8,8 +8,13 @@ import Footer from './Footer'
 const Sidebar = () => {
     return (
         <SidebarComponent>
-            <TopSidebar />
-            <AccountList />
+            <TopSidebar
+                desc="Đăng nhập để follow các tác giả, thích video và xem bình luận."
+            />
+            <AccountList
+                heading="Tài khoản được đề xuất"
+                apiPath="/api/users/suggested"
+            />
             <DiscoverList />
             <Footer />
         </SidebarComponent>

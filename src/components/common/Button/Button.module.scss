@@ -21,6 +21,15 @@
     font-weight: 600;
 }
 
+.hoverPrimaryColor:hover {
+    background: #fe2c550f;
+}
+
+.colorPrimary {
+    color: #fe2c55;
+    font-weight: 600;
+}
+
 .m {
     height: 36px;
 }
@@ -29,6 +38,21 @@
     width: 100%;
     height: 48px;
     display: block;
+}
+
+.sm {
+    min-width: 88px;
+    line-height: 22px;
+    height: 28px;
+}
+
+.textCenter {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .primary {

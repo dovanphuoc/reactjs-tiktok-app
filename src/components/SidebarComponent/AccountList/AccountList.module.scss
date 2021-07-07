@@ -1,0 +1,68 @@
+.accountList {
+    padding-bottom: 16px;
+    position: relative;
+    border-bottom: 1px solid rgba(22, 24, 35, 0.12);
+    .heading {
+        padding: 16px 8px 8px 0;
+        color: #161823bf;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+}
+
+.userItem {
+    padding: 0 8px;
+    margin-bottom: 10px;
+    .userInner {
+        display: flex;
+        .userAvatar {
+            width: 36px;
+            height: 36px;
+            img {
+                width: 100%;
+                height: 100%;
+                display: block;
+                border-radius: 50%;
+            }
+        }
+        .userInfo {
+            margin-left: 12px;
+            .userTitle {
+                span {
+                    color: #161823;
+                    margin-right: 4px;
+                    display: inline-block;
+                    font-weight: 600;
+                    font-size: 1.6rem;
+                }
+                .icon {
+                    color: rgb(32, 213, 236);
+                    font-size: 1.6rem;
+                }
+            }
+            .fullName {
+                color: #161823bf;
+                font-size: 1.2rem;
+            }
+        }
+    }
+}
+
+.seeBtn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 10px;
+    span {
+        color: #fe2c55;
+        font-size: 1.4rem;
+    }
+    .icon {
+        color: #fe2c55;
+        font-size: 1.6rem;
+    }
+}
+
+.inner {
+    overflow: hidden;
+}

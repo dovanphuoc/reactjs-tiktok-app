@@ -17,6 +17,8 @@ const Button = ({
     marginTop,
     hover,
     border,
+    hoverPrimaryColor,
+    textCenter,
     ...restProps
 }) => {
     let Component = 'button'
@@ -30,7 +32,9 @@ const Button = ({
         marginLeft ? styles.marginLeft : '',
         hover ? styles.hover : '',
         border ? styles.border : '',
-        marginTop ? styles.marginTop : ''
+        marginTop ? styles.marginTop : '',
+        hoverPrimaryColor ? styles.hoverPrimaryColor : '',
+        textCenter ? styles.textCenter : ''
     ]
     if (href) {
         Component = 'a'

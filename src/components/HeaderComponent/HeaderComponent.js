@@ -6,11 +6,22 @@ import logo from '../../assets/img/logo.svg'
 import { GoSearch } from 'react-icons/go'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { GiMedicalPackAlt } from 'react-icons/gi'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import { IoIosCloseCircle } from 'react-icons/io'
 import Button from '../common/Button'
 import MenuItem from '../Popper/MenuItem'
 import Popper from '../Popper'
-
-const HeaderComponent = () => {
+import SearchPreview, { ResultItem } from '../SearchPreview'
+const defaultFn = () => {}
+const HeaderComponent = ({
+    handleChangeValue =defaultFn,
+    onViewAllSearchResult =defaultFn,
+    onClickResultItem = defaultFn,
+    onSearchClear = defaultFn,
+    searchValue = '',
+    isSearching = false,
+    searchResult = []
+}) => {
     const menus = useRef([
         {
             title: 'Tiếng việt',
@@ -32,6 +43,26 @@ const HeaderComponent = () => {
         ))
     }
 
+    const renderSearchPreview = () => {
+        return (
+            <SearchPreview
+                searchValue={searchValue}
+                onViewAll={onViewAllSearchResult}
+            >
+                {
+                    searchResult.map(account => (
+                        <ResultItem
+                            key={account.id}
+                            title={account.nickname}
+                            description={account.description}
+                            tick={account.tick}
+                            onSearchItem={onClickResultItem}
+                        />
+                ))}
+            </SearchPreview>
+        )
+    }
+
     return (
         <div className={`${styles.headerContainer} ${styles.middle}`}>
             <div className={styles.headerContent}>
@@ -40,16 +71,43 @@ const HeaderComponent = () => {
                         <img src={logo} alt="logo" />
                     </Link>
                 </div>
-                <div className={styles.searchContainer}>
-                    <div className={styles.searchInput}>
-                        <input type="text" className={styles.inputText} placeholder="Tìm kiếm tài khoản" />
-                        <span className={styles.split}></span>
-                        <button className={styles.searchBtn}>
-                            <GoSearch className={styles.icon} />
-                        </button>
-                        <div className={styles.border}></div>
+                <Popper
+                    interactive
+                    wrapperClassname={styles.previewWrapper}
+                    render={renderSearchPreview}
+                    visible={searchResult.length > 0}
+                >
+                    <div className={styles.searchContainer}>
+                        <div className={styles.searchInput}>
+                            <input
+                                value={searchValue}
+                                onChange={handleChangeValue}
+                                type="text"
+                                className={styles.inputText}
+                                placeholder="Tìm kiếm tài khoản"
+                            />
+                            {!!searchValue && (
+                                <button
+                                    className={styles.clearBtn}
+                                    onClick={isSearching ? defaultFn : onSearchClear}
+                                    // Do not lose focus on the search input when clear search value
+                                    onMouseDown={e => e.preventDefault()}
+                                >
+                                    {isSearching ? (
+                                        <AiOutlineLoading3Quarters className={[styles.icon, styles.spinner].join(' ')} />
+                                    ) : (
+                                        <IoIosCloseCircle className={styles.icon} />
+                                    )}
+                                </button>
+                            )}
+                            <span className={styles.split}></span>
+                            <button className={styles.searchBtn}>
+                                <GoSearch className={styles.icon} />
+                            </button>
+                            <div className={styles.border}></div>
+                        </div>
                     </div>
-                </div>
+                </Popper>
                 <div className={styles.menuRight}>
                     <Button
                         children="Tải lên"
@@ -78,7 +136,6 @@ const HeaderComponent = () => {
                             <BsThreeDotsVertical className={styles.icon} />
                         </div>
                     </Popper>
-
                 </div>
             </div>
         </div>

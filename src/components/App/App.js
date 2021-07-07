@@ -19,10 +19,10 @@ const App = () => {
                 <Header />
                 <Grid type="wide" maxWidth={config.mainWidth}>
                     <Row>
-                        <Column sizeDesktop={3}>
+                        <Column sizeDesktop={4}>
                             <Sidebar />
                         </Column>
-                        <Column sizeDesktop={9}>
+                        <Column sizeDesktop={8}>
                             <Switch>
                                 <Route exact path={config.routes.home} component={Home}></Route>
                                 <Route path={config.routes.follow} component={Follow}></Route>

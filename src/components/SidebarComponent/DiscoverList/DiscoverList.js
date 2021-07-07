@@ -1,10 +1,14 @@
 import React from 'react';
 import styles from './DiscoverList.module.scss'
 
-const DiscoverList = () => {
+const DiscoverList = ({
+    title = '',
+    children = null
+}) => {
     return (
-        <div>
-            DiscoverList
+        <div className={styles.discover}>
+            <h4 className={styles.discoverTitle}>{title}</h4>
+            {children}
         </div>
     );
 };

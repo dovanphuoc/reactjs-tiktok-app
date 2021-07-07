@@ -13,7 +13,7 @@ axios.interceptors.response.use(function (response) {
 });
 
 // Các bạn không dùng Token này, hãy tự lấy token của bạn và thay vào!
-axios.defaults.headers.common['Authorization'] = 'Bearer'
+axios.defaults.headers.common['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aWt0b2suZjh0ZWFtLmRldlwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYyNDI0MTkyNSwiZXhwIjoxNjI2ODMzOTI1LCJuYmYiOjE2MjQyNDE5MjUsImp0aSI6InhpYWFhd2FzeEJoNElieVoiLCJzdWIiOjExMSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.BAvT6nfpSRhaWfqKPsJ2Tzy00o-x3t3o_sbkQnMr_R0'
 
 ReactDOM.render(
   <React.StrictMode>

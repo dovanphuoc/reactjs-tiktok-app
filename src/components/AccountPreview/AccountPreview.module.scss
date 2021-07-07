@@ -1,0 +1,52 @@
+.accountItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    .userAvatar {
+        img {
+            width: 36px;
+            height: 36px;
+            display: block;
+            border-radius: 50%;
+        }
+    }
+    .userInfo {
+        margin-top: 10px;
+        .userTitle {
+            span {
+                color: #161823;
+                margin-right: 4px;
+                display: inline-block;
+                font-weight: 600;
+                font-size: 1.6rem;
+            }
+            .icon {
+                color: rgb(32, 213, 236);
+                font-size: 1.6rem;
+            }
+        }
+        .fullName {
+            color: #161823bf;
+            font-size: 1.2rem;
+        }
+    }
+    .voteWrap {
+        display: flex;
+        .voteItem {
+            margin-right: 10px;
+            &:last-child {
+                margin-right: 0;
+            }
+            .voteUser {
+                color: #000;
+                font-weight: 700;
+                margin-right: 8px;
+                font-size: 1.6rem;
+            }
+            span {
+                color: #161823bf;
+                font-size: 1.6rem;
+            }
+        }
+    }
+}
