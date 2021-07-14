@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import PostItem from '../../components/PostItem'
 import axios from 'axios'
-
+import storage from '../../../src/utils/storage'
 
 const Home = () => {
     const [posts, setPosts] = useState([])
-    const [isMuted, setIsMuted] = useState(true)
+    const [currentPost, setCurrentPost] = useState(null)
+    const [postInViewport, setPostInViewport] = useState(null)
+    const [isMuted, setIsMuted] = useState(storage.get('isMuted', true))
+
+    const videoRefs = useRef({})
+    const currentVideoRef = useRef(null)
+    const stopWhenPaused = useRef(true)
+
     useEffect(() => {
         axios.get('/api/posts?type=for-you&page=1')
             .then(res => {
@@ -15,18 +22,69 @@ const Home = () => {
                 console.log(err)
             })
     }, [])
-    const handleShowDetailPost = () => {
-        console.log('click')
+
+    const getVideoRefByPostId = postId => {
+        return videoRefs.current[postId]
     }
-    const handleToggleplay = () => {
-        console.log('click')
+
+    const setVideoRefByPostId = (postId, ref) => {
+        return videoRefs.current[postId] = ref
     }
-    const handleVolume = () => {
-        console.log('click')
+
+    const getPostURL = post => {
+        return `/@${post.author.nickname}/video/${post.uuid}`
+    } 
+
+    const scrollPostIntoView = useCallback(post => {
+        const videoRef = getVideoRefByPostId(post.id)
+        if (videoRef) {
+            videoRef.scrollIntoView({ block: 'center' })
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!currentPost) return
+        scrollPostIntoView(currentPost)
+        window.history.replaceState(null, document.title, getPostURL(currentPost))
+    }, [currentPost, scrollPostIntoView])
+
+    const handleShowDetailPost = post => {
+        const videoRef = getVideoRefByPostId(post.id)
+        if (videoRef) {
+            videoRef.pause()
+            currentVideoRef.current = videoRef.currentTime
+        }
+
+        setCurrentPost(post)
+        window.history.pushState(null, document.title, getPostURL(post))
     }
-    const handleToggleMute = () => {
-        console.log('click')
+
+    const handleVideoRef = (ref, post) => {
+        setVideoRefByPostId(post.id, ref)
     }
+
+    const checkPlaying = post => {
+        return postInViewport && postInViewport.id === post.id
+    }
+
+    const handleToggleplay = post => {
+        stopWhenPaused.current = false
+        if (checkPlaying(post)) {
+            setPostInViewport(null)
+        } else {
+            setPostInViewport(post)
+        }
+    }
+
+    const handleToggleMute = post => {
+        const videoRef = getVideoRefByPostId(post.id)
+        if (videoRef) {
+            videoRef.muted = !videoRef.muted
+            setIsMuted(videoRef.muted)
+            storage.set('isMuted', videoRef.muted)
+        }
+    }
+
     return (
         <>
             {posts.map(post => (
@@ -35,9 +93,10 @@ const Home = () => {
                     data={post}
                     onShowDetail={handleShowDetailPost}
                     onTogglePlay={handleToggleplay}
-                    onVolume={handleVolume}
+                    onVolume={handleToggleMute}
                     onToggleMute={handleToggleMute}
                     isMuted={isMuted}
+                    getVideoRef={handleVideoRef}
                 />
             ))}  
         </>

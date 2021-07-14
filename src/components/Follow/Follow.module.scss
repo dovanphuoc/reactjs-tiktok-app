@@ -1,0 +1,11 @@
+.follow {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 100px;
+    position: relative;
+
+    .followItem {
+        max-width: calc(100% / 3);
+        flex-basis: calc(100% / 3);
+    }
+}

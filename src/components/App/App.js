@@ -9,7 +9,7 @@ import {
   } from "react-router-dom";
 import Header from '../../container/Header';
 import Home from '../../container/Home'
-import Follow from '../../container/Follow/Folow';
+import FollowContainer from '../../container/FollowContainer';
 import Sidebar from '../../container/Sidebar'
 
 const App = () => {
@@ -25,7 +25,7 @@ const App = () => {
                         <Column sizeDesktop={8}>
                             <Switch>
                                 <Route exact path={config.routes.home} component={Home}></Route>
-                                <Route path={config.routes.follow} component={Follow}></Route>
+                                <Route path={config.routes.follow} component={FollowContainer}></Route>
                             </Switch>
                         </Column>
                     </Row>

@@ -18,6 +18,8 @@ const HeaderComponent = ({
     onViewAllSearchResult =defaultFn,
     onClickResultItem = defaultFn,
     onSearchClear = defaultFn,
+    onShowModal = defaultFn,
+    onClickOutside = defaultFn,
     searchValue = '',
     isSearching = false,
     searchResult = []
@@ -25,20 +27,22 @@ const HeaderComponent = ({
     const menus = useRef([
         {
             title: 'Tiếng việt',
-            icon: <GiMedicalPackAlt />,
-            to: '/messages/?u='
         },
     ])
+    
     const renderMoreMenu = () => {
         return menus.current.map((menu, index) => (
             <MenuItem
                 key={index}
                 to={menu.to}
-                icon={menu.icon}
                 seperate={index === 0}
                 onClick={menu.onClick}
             >
-                {menu.title}
+                <div className={styles.textVi}>
+                    <GiMedicalPackAlt className={styles.icon} /> 
+                    <span>{menu.title}</span>
+                </div>
+                
             </MenuItem>
         ))
     }
@@ -76,6 +80,7 @@ const HeaderComponent = ({
                     wrapperClassname={styles.previewWrapper}
                     render={renderSearchPreview}
                     visible={searchResult.length > 0}
+                    onClickOutside={onClickOutside}
                 >
                     <div className={styles.searchContainer}>
                         <div className={styles.searchInput}>
@@ -88,9 +93,8 @@ const HeaderComponent = ({
                             />
                             {!!searchValue && (
                                 <button
-                                    className={styles.clearBtn}
+                                    className={`${styles.resetInput} ${styles.clearBtn}`}
                                     onClick={isSearching ? defaultFn : onSearchClear}
-                                    // Do not lose focus on the search input when clear search value
                                     onMouseDown={e => e.preventDefault()}
                                 >
                                     {isSearching ? (
@@ -115,14 +119,17 @@ const HeaderComponent = ({
                         underline
                         color="black"
                     />
-                    <Button
-                        children="Đăng nhập"
-                        type="primary"
-                        color="white"
-                        size="m"
-                        marginLeft
-                        hover
-                    />
+                    <div>
+                        <Button
+                            children="Đăng nhập"
+                            type="primary"
+                            color="white"
+                            size="m"
+                            marginLeft
+                            hover
+                            onClick={onShowModal}
+                        />
+                    </div>
                     <Popper
                         interactive
                         wrapperClassname={styles.menuWrapper}

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './TopSidebar.module.scss'
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import config from '../../../config'
 import { AiFillHome, AiOutlineUsergroupDelete } from 'react-icons/ai'
 import Button from '../../common/Button'
@@ -33,7 +33,7 @@ const TopSidebar = ({
             >
                 <div className={styles.iconWrap}>
                     <AiOutlineUsergroupDelete className={styles.icon} />
-                    <span>Đang Follow</span>
+                    <Link className={styles.followLink} to={config.routes.follow}>Đang Follow</Link>
                 </div>
             </NavLink>
             <div className={styles.loginWrapper}>

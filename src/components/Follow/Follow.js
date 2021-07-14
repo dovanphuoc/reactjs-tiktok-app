@@ -1,10 +1,12 @@
 import React from 'react';
 import styles from './Follow.module.scss'
 
-const Follow = () => {
+const Follow = ({
+    children = null
+}) => {
     return (
-        <div>
-            header
+        <div className={styles.follow}>
+            {children}
         </div>
     );
 };

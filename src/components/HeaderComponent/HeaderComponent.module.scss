@@ -50,6 +50,18 @@
                 -moz-appearance: textfield;
                 appearance: textfield;
             }
+            .resetInput .iconSpinner {
+                animation: loading 2s linear infinite;
+            }
+            
+            @keyframes loading {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }            
             .split {
                 width: 1px;
                 height: 28px;
@@ -101,6 +113,14 @@
                 height: 28px;
                 color: #000;
             }
+        }
+    }
+    .textVi {
+        display: flex;
+        align-items: center;
+        .icon {
+            font-size: 1.6rem;
+            margin-right: 6px;
         }
     }
 }

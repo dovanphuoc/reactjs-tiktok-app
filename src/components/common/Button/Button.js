@@ -18,6 +18,7 @@ const Button = ({
     hover,
     border,
     hoverPrimaryColor,
+    floatRight,
     textCenter,
     ...restProps
 }) => {
@@ -34,7 +35,8 @@ const Button = ({
         border ? styles.border : '',
         marginTop ? styles.marginTop : '',
         hoverPrimaryColor ? styles.hoverPrimaryColor : '',
-        textCenter ? styles.textCenter : ''
+        textCenter ? styles.textCenter : '',
+        floatRight ? styles.floatRight : ''
     ]
     if (href) {
         Component = 'a'

@@ -8,6 +8,7 @@ function Popper({
     render = () => null,
     appendTo = () => document.body,
     wrapperClassname = '',
+    onClickOutside = () => {},
     ...props
 }) {
     return (
@@ -15,6 +16,7 @@ function Popper({
             {...props}
             delay={delay}
             appendTo={appendTo}
+            onClickOutside={onClickOutside}
             render={() => (
                 <div
                     style={{ minWidth }}
