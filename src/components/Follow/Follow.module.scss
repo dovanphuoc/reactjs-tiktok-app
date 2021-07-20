@@ -1,11 +1,37 @@
 .follow {
-    display: flex;
-    flex-wrap: wrap;
     padding-top: 100px;
     position: relative;
 
     .followItem {
         max-width: calc(100% / 3);
         flex-basis: calc(100% / 3);
+        padding: 6px;
+        cursor: pointer;
+    }
+    .videoContainer {
+        position: relative;
+    }
+    .video {
+        width: 100%;
+        border-radius: 8px;
+        height: 303px;
+        object-fit: cover;
+    }
+    .videoContent {
+        position: absolute;
+        bottom: 30px;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        .fullname {
+            font-size: 1.8rem;
+        }
+        .nickname {
+            font-size: 1.4rem;
+            line-height: 2.5;
+            .icon {
+                color: rgb(32, 213, 236);
+            }
+        }
     }
 }

@@ -1,13 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './TopSidebar.module.scss'
 import { NavLink, Link } from 'react-router-dom';
 import config from '../../../config'
 import { AiFillHome, AiOutlineUsergroupDelete } from 'react-icons/ai'
 import Button from '../../common/Button'
+import Modal from 'react-modal'
+import Login from '../../Login'
 
+const customStyles = {
+    content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    },
+};
+const defaultFn = () => { }
+const LOGIN_MODAL = 'LOGIN_MODAL'
 const TopSidebar = ({
-    desc = ''
+    desc = '',
+    onHandleLogin = defaultFn
 }) => {
+    const [MODAL, SET_MODAL] = useState(null)
+    const closeModal = () => {
+        SET_MODAL(null)
+    }
     return (
         <div className={styles.wrapper}>
             <NavLink
@@ -46,8 +65,18 @@ const TopSidebar = ({
                     color="colorPrimary"
                     marginTop
                     hoverPrimaryColor
+                    onClick={() => SET_MODAL(LOGIN_MODAL)}
                 />
             </div>
+            <Modal
+                isOpen={MODAL === LOGIN_MODAL}
+                style={customStyles}
+            >
+                <Login
+                    onCloseModal={closeModal}
+                    onShowModalLogin={() => SET_MODAL(LOGIN_MODAL)}
+                />
+            </Modal>
         </div>
     );
 };

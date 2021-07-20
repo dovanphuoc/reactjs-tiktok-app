@@ -1,13 +1,25 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './PostItem.module.scss'
 import { Link } from 'react-router-dom';
 import config from '../../config';
 import Button from '../common/Button';
-import { GrVolumeMute } from 'react-icons/gr'
+import { RiVolumeMuteFill } from 'react-icons/ri'
 import { GiPauseButton } from 'react-icons/gi'
 import { AiFillHeart } from 'react-icons/ai'
 import { FaCommentDots, FaShare } from 'react-icons/fa'
-
+import Modal from 'react-modal'
+import Login from '../Login'
+const customStyles = {
+    content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    },
+};
+const LOGIN_MODAL = 'LOGIN_MODAL'
 const defaultFn = () => {}
 const PostItem = ({
     data = '',
@@ -19,7 +31,14 @@ const PostItem = ({
     onVolume = defaultFn,
     getVideoRef = defaultFn,
 }) => {
+    const [MODAL, SET_MODAL] = useState(null)
     const videoRef = useRef(null)
+    const handleShowModalLogin = () => {
+        SET_MODAL(LOGIN_MODAL)
+    }
+    const closeModal = () => {
+        SET_MODAL(null)
+    }
     return (
         <div className={styles.postItem}>
             <Link to={`${config.routes.home}@${data.user.first_name} ${data.user.last_name}`} className={styles.userAvatar}>
@@ -49,8 +68,18 @@ const PostItem = ({
                         type="default"
                         hoverPrimaryColor
                         textCenter
+                        onClick={() => SET_MODAL(LOGIN_MODAL)}
                     />
                 </div>
+                <Modal
+                    isOpen={MODAL === LOGIN_MODAL}
+                    style={customStyles}
+                >
+                    <Login
+                        onCloseModal={closeModal}
+                        onShowModalLogin={handleShowModalLogin}
+                    />
+                </Modal>
                 <div className={styles.videoItem}>
                     <div className={styles.cardWrapper}>
                         <div className={styles.cardImage}>
@@ -71,7 +100,7 @@ const PostItem = ({
                                 />
                                 <span className={styles.overlay} />
                                 <div className={styles.muteIcon} onClick={() => onVolume(data)}>
-                                    <GrVolumeMute className={styles.icon} />
+                                    <RiVolumeMuteFill className={styles.icon} />
                                 </div>
                                 <div className={styles.toggleIcon} onClick={() => onToggleMute(data)}>
                                     <GiPauseButton className={styles.icon} />

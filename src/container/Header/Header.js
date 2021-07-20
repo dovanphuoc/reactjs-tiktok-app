@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HeaderComponent from '../../components/HeaderComponent'
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -19,10 +19,12 @@ const customStyles = {
 };
 const LOGIN_MODAL = 'LOGIN_MODAL'
 const REGISTER_MODAL = 'REGISTER_MODAL'
+const token = window.localStorage.getItem('token')
 const Header = () => {
     const [valueInput, setValueInput] = useState('')
     const [searchResult, setSearchResult] = useState([])
     const [MODAL, SET_MODAL] = useState(null)
+    const [user, setUser] = useState([])
     const history = useHistory()
     const changeValueInput = (e) => {
         setValueInput(e.target.value)
@@ -55,6 +57,19 @@ const Header = () => {
             })
     }, 800, [valueInput])
 
+    const handleLoginForm = () => {
+        if (token) {
+            axios.get('/api/auth/me')
+                .then(res => {
+                    console.log(res.data)
+                    setUser(res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+    }
+
     return (
         <>
             <HeaderComponent    
@@ -65,6 +80,7 @@ const Header = () => {
                 onSearchClear={handleClearResult}
                 onShowModal={openModal}
                 onClickOutside={handleClickOutside}
+                data={user}
             />
             <Modal
                 isOpen={MODAL === LOGIN_MODAL}
@@ -76,6 +92,7 @@ const Header = () => {
                     loginText="Đăng nhập"
                     onShowModalLogin={() => SET_MODAL(REGISTER_MODAL)}
                     onCloseModal={closeModal}
+                    onHandleLogin={handleLoginForm}
                 />
             </Modal>
             <Modal

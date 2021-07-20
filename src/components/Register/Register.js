@@ -13,7 +13,6 @@ const Register = ({
     onCloseModal = defaultFn
 }) => {
     const [user, setUser] = useState({ type: 'email', email: '', password: '', passwordConfirm: '' })
-    const [errors, setErrors] = useState({})
     const handleSubmitForm = (e) => {
         e.preventDefault()
         axios.post('/api/auth/register', user)

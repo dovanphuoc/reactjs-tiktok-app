@@ -1,44 +1,55 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styles from './Follow.module.scss'
-import { Link } from 'react-router-dom';
-import { AiFillCheckCircle } from 'react-icons/ai'
+import { HiCheckCircle } from 'react-icons/hi'
 import Button from '../common/Button'
+const defaultFn = () => {}
 
-const FollowItem = ({
-    nickname = '',
-    avatar = '',
-    fullName = '',
-    tick = false
-}) => {
+function FollowItem({
+    data,
+    isPlaying = false,
+    onMouseEnter = defaultFn,
+    onClick = defaultFn
+}) {
+    const videoRef = useRef(null)
+    useEffect(() => {
+        if (!videoRef.current) return;
+        if (isPlaying) {
+            videoRef.current.play()
+        } else {
+            videoRef.current.pause()
+            videoRef.current.currentTime = 0
+        }
+    },[isPlaying])
     return (
-        <div className={styles.followItem}>
-            <Link to={`/${nickname}`}>
-                <div className={styles.videoCard}>
-                    <div className={styles.videoCardDefault}>
-                        <div className={styles.videoCardMask}>
-                            <div className={`${styles.cardFooter} ${styles.followFooter}`}>
-                                <img className={styles.avatar} src={avatar} alt="avatar" />
-                            </div>
-                            <h5 className={styles.nickname}>{fullName}</h5>
-                            <h6 className={styles.nickname}>
-                                {nickname}
-                                {tick && (
-                                    <AiFillCheckCircle className={styles.icon} />
-                                )}
-                            </h6>
-                            <Button
-                                children="Follow"
-                                type="primary"
-                                size="m"
-                                color="white"
-                                hoverPrimaryColor
-                            />
-                        </div>
-                    </div>
+        <div className={styles.followItem} onMouseEnter={() => onMouseEnter(data)} onClick={() => onClick(data)}>
+            <div className={styles.videoContainer}>
+                <video
+                    className={styles.video}
+                    muted
+                    loop
+                    src={data.popular_post.file_url}
+                    poster={data.popular_post.thumb_url}
+                    ref={videoRef}
+                />
+                <div className={styles.videoContent}>
+                    <h5 className={styles.fullname}>{`${data.first_name} ${data.last_name}`}</h5>
+                    <h6 className={styles.nickname}>
+                        {data.nickname}
+                        {data.tick && (
+                            <HiCheckCircle className={styles.icon} />
+                        )}
+                    </h6>
+                    <Button
+                        children="Follow"
+                        type="primary"
+                        size="sl"
+                        color="white"
+                        hover
+                    />
                 </div>
-            </Link>
+            </div>
         </div>
     );
-};
+}
 
 export default FollowItem;

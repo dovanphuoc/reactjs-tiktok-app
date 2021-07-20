@@ -11,14 +11,14 @@ const Login = ({
     loginText = '',
     onShowModalLogin = defaultFn,
     onCloseModal = defaultFn,
+    onHandleLogin = defaultFn
 }) => {
     const [user, setUser] = useState({ email: '', password: '' })
-    const [errors, setErrors] = useState({})
     const handleSubmitForm = (e) => {
         e.preventDefault()
         axios.post('/api/auth/login', user)
             .then(res => {
-                window.localStorage.setItem('token', res.data.token)
+                window.localStorage.setItem('token', res.meta.token)
                 window.location.reload()
             })
             .catch(err => {
@@ -61,6 +61,7 @@ const Login = ({
                     color="white"
                     floatRight
                     marginTop
+                    onClick={onHandleLogin}
                 />
             </form>
             <h5>

@@ -4,7 +4,7 @@ const config = {
         home: '/',
         follow: '/follow',
         postDetail: '/post-detail',
-        search: '/search'
+        search: '/search',
     }
 }
 

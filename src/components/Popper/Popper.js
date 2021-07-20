@@ -5,10 +5,12 @@ function Popper({
     children,
     delay = 0,
     minWidth = 280,
+    minHeight = 400,
     render = () => null,
     appendTo = () => document.body,
     wrapperClassname = '',
-    onClickOutside = () => {},
+    onClickOutside = () => { },
+    content = '',
     ...props
 }) {
     return (
@@ -19,8 +21,8 @@ function Popper({
             onClickOutside={onClickOutside}
             render={() => (
                 <div
-                    style={{ minWidth }}
-                    className={[styles.wrapper, wrapperClassname].join(' ')}
+                    style={{ minWidth, minHeight }}
+                    className={[styles.wrapper, styles.menuList, wrapperClassname].join(' ')}
                 >
                     <div className={styles.inner}>
                         {render()}

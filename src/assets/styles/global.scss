@@ -16,10 +16,16 @@ p {
     line-height: 1.6;
 }
 
+
 html {
     font-size: 62.5%;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 1000px;
+    overflow-y: scroll;
 }
 
 input, button {
