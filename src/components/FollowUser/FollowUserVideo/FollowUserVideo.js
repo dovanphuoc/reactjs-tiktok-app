@@ -1,7 +1,8 @@
 import React from 'react';
-import styles from './FollowUserVideo.module.scss'
 
-const FollowUserVideo = () => {
+const FollowUserVideo = ({
+    data,
+}) => {
     return (
         <div>
             user video

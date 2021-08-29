@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../common/Button';
 import styles from './Register.module.scss'
 import { AiFillCloseCircle } from 'react-icons/ai'
@@ -10,9 +10,12 @@ const Register = ({
     accountTitle = '',
     loginText = '',
     onShowModalRegister = defaultFn,
-    onCloseModal = defaultFn
+    onCloseModal = defaultFn,
+    onSubmirForm = defaultFn
 }) => {
     const [user, setUser] = useState({ type: 'email', email: '', password: '', passwordConfirm: '' })
+    const [errors, setErrors] = useState({})
+
     const handleSubmitForm = (e) => {
         e.preventDefault()
         axios.post('/api/auth/register', user)
@@ -21,9 +24,24 @@ const Register = ({
                 window.location.reload()
             })
             .catch((err) => {
-                console.log(err)
+                let status_code = err.response.data.status_code
+                switch (status_code) {
+                    case 422:
+                        const resErrors = {}
+                        Object.keys(err.response.data.errors).forEach(field => {
+                            resErrors[field] = err.response.data.errors[field][0]
+                        })
+                        setErrors(resErrors)
+                        break;
+                    default:
+                        setErrors({
+                            ...errors,
+                            password: 'Account has used please register another account'
+                        })
+                }
             })
     }
+
     return (
         <div className={styles.wrapper}>
             <h3 className={styles.title}>{title}</h3>
@@ -33,14 +51,19 @@ const Register = ({
             <form onSubmit={handleSubmitForm}>
                 <div className={styles.formGroup}>
                     <input
-                        type="email"
                         name="email"
                         id="email"
                         placeholder="Enter your email"
-                        required
                         value={user.email}
-                        onChange={(e) => setUser({ ...user, email: e.target.value})}
+                        onChange={e => {
+                            setUser({ ...user, email: e.target.value })
+                            setErrors({
+                                ...errors,
+                                email: null
+                            })
+                        }}
                     />
+                    <span>{errors.email}</span>
                 </div>
                 <div className={styles.formGroup}>
                     <input
@@ -48,10 +71,16 @@ const Register = ({
                         name="password"
                         id="password"
                         placeholder="Enter your password"
-                        required
                         value={user.password}
-                        onChange={(e) => setUser({...user, password: e.target.value})}
+                        onChange={e => {
+                            setUser({ ...user, password: e.target.value })
+                            setErrors({
+                                ...errors,
+                                password: null
+                            })
+                        }}
                     />
+                    <span>{errors.password}</span>
                 </div>
                 <div className={styles.formGroup}>
                     <input
@@ -59,10 +88,16 @@ const Register = ({
                         name="password"
                         id="password"
                         placeholder="Enter your password confirmation"
-                        required
                         value={user.passwordConfirm}
-                        onChange={(e) => setUser({...user, passwordConfirm: e.target.value})}
+                        onChange={e => {
+                            setUser({ ...user, passwordConfirm: e.target.value })
+                            setErrors({
+                                ...errors,
+                                passwordConfirm: null
+                            })
+                        }}
                     />
+                    <span>{errors.password}</span>
                 </div>
                 <Button
                     children="Submit"
@@ -71,7 +106,8 @@ const Register = ({
                     color="white"
                     floatRight
                     marginTop
-                />
+                    onClick={onSubmirForm}
+                />  
             </form>
             <h5>
                 {accountTitle}

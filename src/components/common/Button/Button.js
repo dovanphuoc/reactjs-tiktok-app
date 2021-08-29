@@ -11,6 +11,7 @@ const Button = ({
     openNewTab = false,
     children = null,
     onClick = defaultFn,
+    onFollowUser = defaultFn,
     size = 'm',
     underline,
     marginLeft,
@@ -20,6 +21,7 @@ const Button = ({
     hoverPrimaryColor,
     floatRight,
     textCenter,
+    actived,
     ...restProps
 }) => {
     let Component = 'button'
@@ -36,7 +38,8 @@ const Button = ({
         marginTop ? styles.marginTop : '',
         hoverPrimaryColor ? styles.hoverPrimaryColor : '',
         textCenter ? styles.textCenter : '',
-        floatRight ? styles.floatRight : ''
+        floatRight ? styles.floatRight : '',
+        actived ? styles.actived : ''
     ]
     if (href) {
         Component = 'a'

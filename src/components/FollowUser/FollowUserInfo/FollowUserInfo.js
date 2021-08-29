@@ -1,10 +1,11 @@
 import React from 'react';
-import styles from './FollowUserInfo.module.scss'
 
-const FollowUserInfo = () => {
+const FollowUserInfo = ({
+    data,
+}) => {
     return (
         <div>
-            userInfo
+            hello
         </div>
     );
 };

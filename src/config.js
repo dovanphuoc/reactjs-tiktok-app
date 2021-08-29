@@ -1,10 +1,11 @@
 const config = {
-    mainWidth: 1200,
+    mainWidth: 1150,
     routes: {
         home: '/',
         follow: '/follow',
-        postDetail: '/post-detail',
+        postDetail: '/:nickname/video/:videoId',
         search: '/search',
+        followUser: '/:nickname'
     }
 }
 

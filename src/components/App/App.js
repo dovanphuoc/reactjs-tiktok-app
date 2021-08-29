@@ -11,6 +11,8 @@ import Header from '../../container/Header';
 import Home from '../../container/Home'
 import FollowContainer from '../../container/FollowContainer';
 import Sidebar from '../../container/Sidebar'
+import PostDetailModal from '../../container/Home'
+import FollowUser from '../../container/FollowContainer';
 
 const App = () => {
     return (
@@ -26,6 +28,8 @@ const App = () => {
                             <Switch>
                                 <Route exact path={config.routes.home} component={Home}></Route>
                                 <Route path={config.routes.follow} component={FollowContainer}></Route>
+                                <Route path={config.routes.postDetail} component={PostDetailModal}></Route>
+                                <Route path={config.routes.followUser} component={FollowUser}></Route>
                             </Switch>
                         </Column>
                     </Row>

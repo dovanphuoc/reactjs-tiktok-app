@@ -63,6 +63,7 @@ const AccountList = ({
                     placement="bottom"
                     interactive
                     minWidth={320}
+                    minHeight={100}
                     delay={[1000, 0]}
                     offset={[28, -4]}
                     render={() => (

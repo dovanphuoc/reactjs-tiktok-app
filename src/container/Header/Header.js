@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import HeaderComponent from '../../components/HeaderComponent'
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -25,6 +25,7 @@ const Header = () => {
     const [searchResult, setSearchResult] = useState([])
     const [MODAL, SET_MODAL] = useState(null)
     const [user, setUser] = useState([])
+
     const history = useHistory()
     const changeValueInput = (e) => {
         setValueInput(e.target.value)
@@ -59,15 +60,18 @@ const Header = () => {
 
     const handleLoginForm = () => {
         if (token) {
-            axios.get('/api/auth/me')
+            axios.post('/api/auth/me')
                 .then(res => {
-                    console.log(res.data)
                     setUser(res.data)
                 })
                 .catch(err => {
                     console.log(err)
                 })
         }
+    }
+
+    const handleLogout = () => {
+        console.log('logout')
     }
 
     return (
@@ -80,7 +84,8 @@ const Header = () => {
                 onSearchClear={handleClearResult}
                 onShowModal={openModal}
                 onClickOutside={handleClickOutside}
-                data={user}
+                onHandleLogout={handleLogout}
+                avatar={user}
             />
             <Modal
                 isOpen={MODAL === LOGIN_MODAL}

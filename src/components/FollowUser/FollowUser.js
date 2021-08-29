@@ -2,12 +2,12 @@ import React from 'react';
 
 const FollowUser = ({
     children = null,
-    nickname = ''
 }) => {
     return (
-        <div style={{paddingTop: '200px'}}>
-            {children}
-            {nickname}
+        <div style={{ padding: '36px 20px 36px 128px' }}>
+            <div style={{ paddingRight: '48px' }}>
+                {children}
+            </div>
         </div>
     );
 };

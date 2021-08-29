@@ -21,7 +21,10 @@ function FollowItem({
         }
     },[isPlaying])
     return (
-        <div className={styles.followItem} onMouseEnter={() => onMouseEnter(data)} onClick={() => onClick(data)}>
+        <div className={styles.followItem}
+            onMouseEnter={() => onMouseEnter(data)}
+            onClick={() => onClick(data)}
+        >
             <div className={styles.videoContainer}>
                 <video
                     className={styles.video}

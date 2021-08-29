@@ -1,6 +1,9 @@
 .follow {
     padding-top: 100px;
     position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
 
     .followItem {
         max-width: calc(100% / 3);

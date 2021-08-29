@@ -35,7 +35,7 @@
             width: 100%;
             &:first-child,
             &:nth-child(2) {
-                margin-bottom: 25px;
+                margin-bottom: 15px;
             }
             &::placeholder {
                 font-size: 1.6rem;
@@ -54,6 +54,15 @@
             color: #ff4c3a;
             font-weight: 600;
             cursor: pointer;
+        }
+    }
+    .formGroup {
+        margin-bottom: 15px;
+        span {
+            color: #fe2c55;
+            display: block;
+            margin-top: 10px;
+            font-size: 1.6rem;
         }
     }
 }

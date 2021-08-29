@@ -16,7 +16,6 @@ import Popper from '../Popper'
 import SearchPreview, { ResultItem } from '../SearchPreview'
 import Modal from 'react-modal'
 import Login from '../Login'
-import imageGirl from '../../assets/img/girl1.jpg'
 import Tooltip from '../Tooltip';
 
 const LOGIN_MODAL = 'LOGIN_MODAL'
@@ -38,8 +37,10 @@ const HeaderComponent = ({
     onSearchClear = defaultFn,
     onShowModal = defaultFn,
     onClickOutside = defaultFn,
+    onHandleLogout = defaultFn,
     searchValue = '',
     isSearching = false,
+    data,
     searchResult = []
 }) => {
     const token = window.localStorage.getItem('token')
@@ -49,6 +50,10 @@ const HeaderComponent = ({
             title: 'Tiếng việt',
         },
     ])
+
+    const handleLogOut = () => {
+        console.log('log out')
+    }
 
     const menuListUser = useRef([
         {
@@ -69,7 +74,7 @@ const HeaderComponent = ({
         },
         {
             icon: <FiLogIn className={styles.icon} />,
-            title: 'Đăng xuất'
+            title: <span onClick={handleLogOut}>Đăng xuất</span>
         },
     ])
     
@@ -124,6 +129,11 @@ const HeaderComponent = ({
             </SearchPreview>
         )
     }
+
+    // const getAvatar = data.map(item => {
+    //     return item.avatar
+    // })
+    console.log(data)
 
     return (
         <div className={`${styles.headerContainer} ${styles.middle}`}>
@@ -214,7 +224,7 @@ const HeaderComponent = ({
                                 minHeight={160}
                             >
                                 <div className={`${styles.avatar} ${styles.iconUser}`}>
-                                    <img src={imageGirl} alt="avatar" />
+                                    <img  alt="avatar" />
                                 </div>
                             </Popper>
                             
@@ -247,6 +257,7 @@ const HeaderComponent = ({
                                 placement="bottom"
                                 offset={[-60, 10]}
                                 minWidth={200}
+                                minHeight={40}
                             >
                                 <div className={styles.iconWrap}>
                                     <BsThreeDotsVertical className={styles.icon} />

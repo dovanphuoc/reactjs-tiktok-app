@@ -1,14 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styles from './PostItem.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPause, faPlay, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 import config from '../../config';
 import Button from '../common/Button';
-import { RiVolumeMuteFill } from 'react-icons/ri'
-import { GiPauseButton } from 'react-icons/gi'
 import { AiFillHeart } from 'react-icons/ai'
 import { FaCommentDots, FaShare } from 'react-icons/fa'
 import Modal from 'react-modal'
 import Login from '../Login'
+import { Waypoint } from 'react-waypoint'
+
 const customStyles = {
     content: {
     top: '50%',
@@ -19,26 +21,63 @@ const customStyles = {
     transform: 'translate(-50%, -50%)',
     },
 };
+const token = window.localStorage.getItem('token')
 const LOGIN_MODAL = 'LOGIN_MODAL'
 const defaultFn = () => {}
 const PostItem = ({
     data = '',
     hastag = '',
     isMuted = false,
+    isPlaying = false,
+    stopWhenPaused = false,
+    isWaypoint = false,
     onShowDetail = defaultFn,
-    onTogglePlay = defaultFn,
+    onFollowUser = defaultFn,
     onToggleMute = defaultFn,
-    onVolume = defaultFn,
     getVideoRef = defaultFn,
+    onTogglePlay = defaultFn,
+    onEnterWaypoint = defaultFn,
+    onLikeCount = defaultFn,
+    onCommentCount = defaultFn,
+    onShareCount = defaultFn,
 }) => {
     const [MODAL, SET_MODAL] = useState(null)
     const videoRef = useRef(null)
+    useEffect(() => {
+        if (!videoRef.current) return
+        if (isPlaying) {
+            videoRef.current.play()
+        } else {
+            videoRef.current.pause()
+            if (stopWhenPaused) {
+                videoRef.current.currentTime = 0
+            }
+        }
+    }, [isPlaying, stopWhenPaused])
+
     const handleShowModalLogin = () => {
         SET_MODAL(LOGIN_MODAL)
     }
     const closeModal = () => {
         SET_MODAL(null)
     }
+    const getVideoWidth = () => {
+        const videoWidth = data.meta.video.resolution_x
+        const videoHeight = data.meta.video.resolution_y
+        const videoRatio = videoWidth / videoHeight
+        if (videoWidth > videoHeight) {
+            return `calc(400px + ((100vw - 768px) / 1152) * 100)`
+        } return `calc(${videoRatio} * (400px + ((100vw - 768px) / 1152) * 100))`
+    }
+
+    const topOffsetVideo = () => {
+        return (window.innerHeight - 60) / 3
+    }
+
+    const bottomOffsetVideo = () => {
+        return (window.innerHeight - 60) / 3
+    }
+
     return (
         <div className={styles.postItem}>
             <Link to={`${config.routes.home}@${data.user.first_name} ${data.user.last_name}`} className={styles.userAvatar}>
@@ -59,18 +98,37 @@ const PostItem = ({
                     </Link>
                     <strong>{data.description}</strong>
                 </div>
-                <div className={styles.btnFollow}>
-                    <Button
-                        children="Follow"
-                        border
-                        color="colorPrimary"
-                        size="sm"
-                        type="default"
-                        hoverPrimaryColor
-                        textCenter
-                        onClick={() => SET_MODAL(LOGIN_MODAL)}
-                    />
-                </div>
+                {token ? (
+                    <div className={styles.btnFollow}>
+                        <Button
+                            border
+                            color="colorPrimary"
+                            size="sm"
+                            type="default"
+                            hoverPrimaryColor
+                            textCenter
+                            onClick={() => onFollowUser(data)}
+                            actived={data.user.is_followed}
+                        >
+                            <span>{data.user.is_followed ? 'Đang follow' : 'Follow'}</span>
+                        </Button>
+                    </div>
+                ) : (
+                    <div className={styles.btnFollow}>
+                        <Button
+                            border
+                            color="colorPrimary"
+                            size="sm"
+                            type="default"
+                            hoverPrimaryColor
+                            textCenter
+                            onClick={() => SET_MODAL(LOGIN_MODAL)}
+                        >
+                            <span>Follow</span>
+                        </Button>
+                    </div>
+                )}
+                
                 <Modal
                     isOpen={MODAL === LOGIN_MODAL}
                     style={customStyles}
@@ -83,43 +141,53 @@ const PostItem = ({
                 <div className={styles.videoItem}>
                     <div className={styles.cardWrapper}>
                         <div className={styles.cardImage}>
-                            <div className={styles.videoCard}>
-                                <video
-                                    className={styles.video}
-                                    loop
-                                    muted={isMuted}
-                                    autoPlay
-                                    ref={ref => {
-                                        videoRef.current = ref
-                                        getVideoRef(ref, data)
-                                    }}
-                                    poster={data.thumb_url}
-                                    src={data.file_url}
-                                    onClick={() => onShowDetail(data)}
-                                    
-                                />
-                                <span className={styles.overlay} />
-                                <div className={styles.muteIcon} onClick={() => onVolume(data)}>
-                                    <RiVolumeMuteFill className={styles.icon} />
-                                </div>
-                                <div className={styles.toggleIcon} onClick={() => onToggleMute(data)}>
-                                    <GiPauseButton className={styles.icon} />
-                                </div>
-                            </div>
+                            {isWaypoint && (
+                                <Waypoint
+                                    onEnter={() => onEnterWaypoint(data)}
+                                    topOffset={topOffsetVideo()}
+                                    bottomOffset={bottomOffsetVideo()}
+                                >
+                                    <video
+                                        style={{ width: getVideoWidth() }}
+                                        className={styles.video}
+                                        loop
+                                        muted={isMuted}
+                                        autoPlay
+                                        ref={ref => {
+                                            videoRef.current = ref
+                                            getVideoRef(ref, data)
+                                        }}
+                                        poster={data.thumb_url}
+                                        src={data.file_url}
+                                        onClick={() => onShowDetail(data)}
+                                    />
+                                </Waypoint>
+                            )}
+                            <span className={styles.overlay} />
+
+                            <button className={[styles.btn, styles.playBtn].join(' ')}
+                                onClick={() => onTogglePlay(data)}
+                            >
+                                <FontAwesomeIcon className={styles.playIcon} icon={isPlaying ? faPause : faPlay} />
+                            </button>
+                            <button className={[styles.btn, styles.vlBtn].join(' ')}
+                                onClick={() => onToggleMute(data)}
+                            >
+                                <FontAwesomeIcon className={styles.vlIcon} icon={isMuted ? faVolumeMute : faVolumeUp} />
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className={styles.iconAction}>
+                <div className={styles.iconAction}>
                 <div className={styles.itemWrapper}>
-                    <div className={styles.barItem}>
-                        <AiFillHeart className={styles.icon} />
+                    <div className={styles.barItem} onClick={() => onLikeCount(data)}>
+                        <AiFillHeart className={`${styles.icon} ${data.is_liked ? styles.likeIcon : ''}`} />
                     </div>
                     <strong>{data.likes_count}</strong>
                 </div>
 
                 <div className={styles.itemWrapper}>
-                    <div className={styles.barItem}>
+                    <div className={styles.barItem} onClick={() => onCommentCount(data)}>
                         <FaCommentDots className={styles.icon} />
                     </div>
                     <strong>{data.comments_count}</strong>
@@ -132,6 +200,8 @@ const PostItem = ({
                     <strong>{data.shares_count}</strong>
                 </div>
             </div>
+            </div>
+            
         </div>
     );
 };

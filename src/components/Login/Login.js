@@ -11,18 +11,34 @@ const Login = ({
     loginText = '',
     onShowModalLogin = defaultFn,
     onCloseModal = defaultFn,
-    onHandleLogin = defaultFn
+    onHandleLogin = defaultFn,
 }) => {
     const [user, setUser] = useState({ email: '', password: '' })
+    const [errors, setErrors] = useState({})
+
     const handleSubmitForm = (e) => {
         e.preventDefault()
-        axios.post('/api/auth/login', user)
+        axios.post('/api/auth/me', user)
             .then(res => {
                 window.localStorage.setItem('token', res.meta.token)
                 window.location.reload()
             })
             .catch(err => {
-                console.log(err)
+                let status_code = err.response.data.status_code
+                switch (status_code) {
+                    case 422:
+                        const resErrors = {}
+                        Object.keys(err.response.data.errors).forEach(field => {
+                            resErrors[field] = err.response.data.errors[field][0]
+                        })
+                        setErrors(resErrors)
+                        break;
+                    default:
+                        setErrors({
+                            ...errors,
+                            password: 'Account has used'
+                        })
+                }
             })
     }
     return (
@@ -32,28 +48,40 @@ const Login = ({
                 <AiFillCloseCircle className={styles.icon} />
             </button>
             <form onSubmit={handleSubmitForm}>
-                <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Enter your email"
-                    required
-                    value={user.email}
-                    onChange={e => {
-                        setUser({ ...user, email: e.target.value })
-                    }}
-                />
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Enter your password"
-                    required
-                    value={user.password}
-                    onChange={(e) => {
-                        setUser({ ...user, password: e.target.value })
-                    }}
-                />
+                <div className={styles.formGroup}>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        value={user.email}
+                        onChange={e => {
+                            setUser({ ...user, email: e.target.value })
+                            setErrors({
+                                ...errors,
+                                email: null
+                            })
+                        }}
+                    />
+                    <span>{errors.email}</span>
+                </div>
+                <div className={styles.formGroup}>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        value={user.password}
+                        onChange={e => {
+                            setUser({ ...user, password: e.target.value })
+                            setErrors({
+                                ...errors,
+                                password: null
+                            })
+                        }}
+                    />
+                    <span>{errors.password}</span>
+                </div>
                 <Button
                     children="Submit"
                     type="primary"
