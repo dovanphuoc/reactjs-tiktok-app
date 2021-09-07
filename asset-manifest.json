@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/reactjs-tiktok-app/static/css/main.8eb7e164.chunk.css",
+    "main.js": "/reactjs-tiktok-app/static/js/main.0e611332.chunk.js",
+    "main.js.map": "/reactjs-tiktok-app/static/js/main.0e611332.chunk.js.map",
+    "runtime-main.js": "/reactjs-tiktok-app/static/js/runtime-main.fe054f5c.js",
+    "runtime-main.js.map": "/reactjs-tiktok-app/static/js/runtime-main.fe054f5c.js.map",
+    "static/css/2.6775a049.chunk.css": "/reactjs-tiktok-app/static/css/2.6775a049.chunk.css",
+    "static/js/2.d5960a4c.chunk.js": "/reactjs-tiktok-app/static/js/2.d5960a4c.chunk.js",
+    "static/js/2.d5960a4c.chunk.js.map": "/reactjs-tiktok-app/static/js/2.d5960a4c.chunk.js.map",
+    "static/js/3.9b43e91d.chunk.js": "/reactjs-tiktok-app/static/js/3.9b43e91d.chunk.js",
+    "static/js/3.9b43e91d.chunk.js.map": "/reactjs-tiktok-app/static/js/3.9b43e91d.chunk.js.map",
+    "index.html": "/reactjs-tiktok-app/index.html",
+    "static/css/2.6775a049.chunk.css.map": "/reactjs-tiktok-app/static/css/2.6775a049.chunk.css.map",
+    "static/css/main.8eb7e164.chunk.css.map": "/reactjs-tiktok-app/static/css/main.8eb7e164.chunk.css.map",
+    "static/js/2.d5960a4c.chunk.js.LICENSE.txt": "/reactjs-tiktok-app/static/js/2.d5960a4c.chunk.js.LICENSE.txt",
+    "static/media/logo.b9583402.svg": "/reactjs-tiktok-app/static/media/logo.b9583402.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.fe054f5c.js",
+    "static/css/2.6775a049.chunk.css",
+    "static/js/2.d5960a4c.chunk.js",
+    "static/css/main.8eb7e164.chunk.css",
+    "static/js/main.0e611332.chunk.js"
+  ]
+}
