@@ -6,10 +6,10 @@ import logo from '../../assets/img/logo.svg'
 import { GoSearch } from 'react-icons/go'
 import { BsThreeDotsVertical, BsCloudUpload } from 'react-icons/bs'
 import { GiMedicalPackAlt } from 'react-icons/gi'
-import { AiOutlineLoading3Quarters, AiOutlineQuestionCircle } from 'react-icons/ai'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { IoIosCloseCircle } from 'react-icons/io'
-import { FiSend, FiLogIn, FiSettings } from 'react-icons/fi'
-import { BiCommentMinus, BiUser } from 'react-icons/bi'
+import { FiSend } from 'react-icons/fi'
+import { BiCommentMinus } from 'react-icons/bi'
 import Button from '../common/Button'
 import MenuItem from '../Popper/MenuItem'
 import Popper from '../Popper'
@@ -33,14 +33,11 @@ const defaultFn = () => {}
 const HeaderComponent = ({
     handleChangeValue =defaultFn,
     onViewAllSearchResult =defaultFn,
-    onClickResultItem = defaultFn,
     onSearchClear = defaultFn,
     onShowModal = defaultFn,
     onClickOutside = defaultFn,
-    onHandleLogout = defaultFn,
     searchValue = '',
     isSearching = false,
-    data,
     searchResult = []
 }) => {
     const token = window.localStorage.getItem('token')
@@ -52,31 +49,9 @@ const HeaderComponent = ({
     ])
 
     const handleLogOut = () => {
-        console.log('log out')
+        window.localStorage.removeItem('token')
+        window.location.reload()
     }
-
-    const menuListUser = useRef([
-        {
-            icon: <BiUser className={styles.icon} />,
-            title: 'Xem hồ sơ'
-        },
-        {
-            icon: <FiSettings className={styles.icon} />,
-            title: 'Cài đặt'
-        },
-        {
-            icon: <GiMedicalPackAlt className={styles.icon} />,
-            title: 'Tiếng việt'
-        },
-        {
-            icon: <AiOutlineQuestionCircle className={styles.icon} />,
-            title: 'Phản hồi và trợ giúp'
-        },
-        {
-            icon: <FiLogIn className={styles.icon} />,
-            title: <span onClick={handleLogOut}>Đăng xuất</span>
-        },
-    ])
     
     const renderMoreMenu = () => {
         return menus.current.map((menu, index) => (
@@ -94,22 +69,6 @@ const HeaderComponent = ({
         ))
     }
 
-    const userMenuList = () => {
-        return menuListUser.current.map((menu, index) => (
-            <MenuItem
-                key={index}
-                to={menu.to}
-                seperate={index === 0}
-                onClick={menu.onClick}
-            >
-                <div className={styles.textVi}>
-                    <span className={styles.icon}>{menu.icon}</span>
-                    <span className={styles.title}>{menu.title}</span>
-                </div>
-            </MenuItem>
-        ))
-    }
-
     const renderSearchPreview = () => {
         return (
             <SearchPreview
@@ -120,20 +79,12 @@ const HeaderComponent = ({
                     searchResult.map(account => (
                         <ResultItem
                             key={account.id}
-                            title={account.nickname}
-                            description={account.description}
-                            tick={account.tick}
-                            onSearchItem={onClickResultItem}
+                            data={account}
                         />
                 ))}
             </SearchPreview>
         )
     }
-
-    // const getAvatar = data.map(item => {
-    //     return item.avatar
-    // })
-    console.log(data)
 
     return (
         <div className={`${styles.headerContainer} ${styles.middle}`}>
@@ -149,6 +100,7 @@ const HeaderComponent = ({
                     render={renderSearchPreview}
                     visible={searchResult.length > 0}
                     onClickOutside={onClickOutside}
+                    minHeight={250}
                 >
                     <div className={styles.searchContainer}>
                         <div className={styles.searchInput}>
@@ -213,20 +165,14 @@ const HeaderComponent = ({
                                 </div>
                             </Tooltip>
                             
-                            <Popper
-                                interactive
-                                wrapperClassname={styles.menuList}
-                                render={userMenuList}
-                                appendTo="parent"
-                                placement="bottom"
-                                offset={[-30, 10]}
-                                minWidth={200}
-                                minHeight={160}
-                            >
-                                <div className={`${styles.avatar} ${styles.iconUser}`}>
-                                    <img  alt="avatar" />
-                                </div>
-                            </Popper>
+                            <Button
+                                children="Đăng xuất"
+                                type="primary"
+                                size="m"
+                                color="white"
+                                hover
+                                onClick={handleLogOut}
+                            />
                             
                         </>
                     ) : (

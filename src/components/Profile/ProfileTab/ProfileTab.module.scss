@@ -1,0 +1,39 @@
+.videoFeedTab {
+    display: flex;
+    position: relative;
+    .tabVideo {
+        font-weight: 700;
+    }
+    .tabVideo, .tabLike {
+        position: relative;
+        flex: 1;
+        text-align: center;
+        font-size: 1.8rem;
+        line-height: 25px;
+        color: #121212;
+        cursor: pointer;
+    }
+
+    .bottomLine {
+        position: absolute;
+        width: 50%;
+        height: 2px;
+        background: #161823;
+        left: 0;
+        bottom: 0;
+        transition: transform .3s;
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            height: 1px;
+            left: 0;
+            right: 0;
+            background-color: rgba(22,24,35,0.2);
+            transform: scaleY(0.5);
+        }
+    }
+    .bottomLine.active{
+        transform: translateX(0px);
+    }
+}

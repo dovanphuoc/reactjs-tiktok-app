@@ -12,7 +12,7 @@ import Home from '../../container/Home'
 import FollowContainer from '../../container/FollowContainer';
 import Sidebar from '../../container/Sidebar'
 import PostDetailModal from '../../container/Home'
-import FollowUser from '../../container/FollowContainer';
+import Profile from '../../container/Profile'
 
 const App = () => {
     return (
@@ -29,7 +29,7 @@ const App = () => {
                                 <Route exact path={config.routes.home} component={Home}></Route>
                                 <Route path={config.routes.follow} component={FollowContainer}></Route>
                                 <Route path={config.routes.postDetail} component={PostDetailModal}></Route>
-                                <Route path={config.routes.followUser} component={FollowUser}></Route>
+                                <Route path={config.routes.profile} component={Profile}></Route>
                             </Switch>
                         </Column>
                     </Row>

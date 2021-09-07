@@ -1,0 +1,61 @@
+.videoItem {
+    padding-right: 2px;
+    padding-bottom: 2px;
+    max-width: calc(100%/3);
+    flex-basis: calc(100%/3);
+
+    .ratio {
+        position: relative;
+        width: 100%;
+    }
+
+    .ratioWrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .videoCardDefault {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .videoCardMask {
+        position: absolute;
+        inset: 0;
+    }
+
+    .video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .cardFooter {
+        position: absolute;
+        width: 100%;
+        bottom: 0px;
+        height: 100px;
+        background: linear-gradient(rgba(22, 24, 35, 0) 2.92%, rgba(22, 24, 35, 0.5) 98.99%);
+        padding: 7px 13px 17px;
+        display: flex;
+        align-items: center;
+        .icon {
+            font-size: 3rem;
+            color: #fff;
+            margin-right: 4px;
+        }
+        span {
+            color: #fff;
+            font-weight: 500;
+            font-size: 1.8rem;
+        }
+    }
+    .noAvatar {
+        padding-top: 67px;
+    }
+}

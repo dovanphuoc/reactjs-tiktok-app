@@ -1,0 +1,122 @@
+.commentContainer {
+    width: 100%;
+    position: relative;
+    display: block;
+    background-color: rgb(248, 248, 248);
+    padding: 0px 32px;
+    border-top: 0.5px solid rgba(18, 18, 18, 0.12);
+    border-bottom: 0.5px solid rgba(18, 18, 18, 0.12);
+    box-sizing: border-box;
+    .comments {
+        padding-top: 16px;
+        width: 100%;
+        .commentItem {
+            margin-bottom: 16px;
+            width: 100%;
+        }
+        .commentContent {
+            padding: 0px;
+            margin-bottom: 16px;
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            user-select: none;
+            img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+            }
+        }
+        .commentWrap {
+            margin-left: 20px;
+        }
+        .nicknameCmt {
+            font-size: 18px;
+            line-height: 25px;
+            font-weight: 600;
+            color: rgb(22, 24, 35);
+        }
+        .commentText {
+            padding-top: 4px;
+            padding-right: 40px;
+            font-size: 1.6rem;
+            font-weight: 400;
+            line-height: 22px;
+            color: rgb(22, 24, 35);
+            word-break: break-word;
+            white-space: pre-line;
+            user-select: none;
+            span {
+                font-size: 16px;
+                line-height: 22px;
+                color: rgb(18, 18, 18);
+            }
+            .bottomContainer {
+                display: flex;
+                .commentTime {
+                    display: block;
+                    font-size: 14px;
+                    line-height: 20px;
+                    margin: 6px 0px 0px;
+                    color: rgba(18, 18, 18, 0.5);
+                    user-select: none;
+                }
+            }
+        }
+        .likeContainer {
+            position: absolute;
+            top: 24px;
+            right: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 20px;
+            .icon {
+                font-size: 1.6rem;
+                color: #333;
+            }
+            span {
+                display: block;
+                font-weight: 400;
+                font-size: 1.3rem;
+                line-height: 17px;
+                text-align: center;
+                color: rgba(22, 24, 35, 0.5);
+            }
+        }
+    }
+}
+.vlBtn {
+    .vlIcon {
+        cursor: pointer;
+        position: absolute;
+        bottom: 45px;
+        right: 30px;
+        font-size: 3.5rem;
+        color: #fff;
+    }
+}
+.commentPostOutside {
+    margin: 0px 32px;
+    padding: 21px 0px;
+    background-color: rgb(255, 255, 255);
+    .placeHolderInner {
+        width: 90%;
+        padding: 10px;
+        background: rgba(22, 24, 35, 0.06);
+        border-radius: 8px;
+        font-size: 1.6rem;
+        caret-color: rgb(254, 44, 85);
+    }
+    .placeHolderInner:focus {
+        border: 1px solid rgba(22, 24, 35, 0.2);
+    }
+    .placeHolderInner::placeholder {
+        font-size: 1.4rem;
+    }
+    button {
+        margin-left: 10px;
+        background: transparent;
+        color: #fe2c55;
+    }
+}

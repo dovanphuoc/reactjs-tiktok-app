@@ -2,13 +2,15 @@ import React, { useRef, useEffect } from 'react';
 import styles from './Follow.module.scss'
 import { HiCheckCircle } from 'react-icons/hi'
 import Button from '../common/Button'
+import { Link } from 'react-router-dom';
+import config from '../../config'
 const defaultFn = () => {}
 
 function FollowItem({
     data,
     isPlaying = false,
     onMouseEnter = defaultFn,
-    onClick = defaultFn
+    onProfile = defaultFn
 }) {
     const videoRef = useRef(null)
     useEffect(() => {
@@ -21,9 +23,10 @@ function FollowItem({
         }
     },[isPlaying])
     return (
-        <div className={styles.followItem}
+        <Link className={styles.followItem}
+            to={`${config.routes.home}@${data.nickname}`}
+            onClick={() => onProfile(data)}
             onMouseEnter={() => onMouseEnter(data)}
-            onClick={() => onClick(data)}
         >
             <div className={styles.videoContainer}>
                 <video
@@ -51,7 +54,7 @@ function FollowItem({
                     />
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 

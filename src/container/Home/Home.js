@@ -1,12 +1,17 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import PostItem from '../../components/PostItem'
 import axios from 'axios'
 import storage from '../../../src/utils/storage'
 import {
     PostDetailModal,
 } from '../../components/PostDetailModal';
+import { Waypoint } from 'react-waypoint';
+import Comment from '../../components/PostDetailModal/Comment'
 
 const Home = () => {
+    let { videoId } = useParams()
+
     const [pagination, setPagination] = useState({
         total: 0,
         perPage: 0,
@@ -15,10 +20,10 @@ const Home = () => {
     })
 
     const [posts, setPosts] = useState([])
+    const [comments, setComments] = useState([])
     const [postInViewport, setPostInViewport] = useState(null)
     const [isMuted, setIsMuted] = useState(storage.get('isMuted', true))
     const [currentPost, setCurrentPost] = useState(null)
-
     const videoRefs = useRef({})
     const currentVideoRef = useRef(null)
     const stopWhenPaused = useRef(true)
@@ -41,6 +46,17 @@ const Home = () => {
                 console.log(err)
             })
     }, [pagination.currentPage])
+
+    useEffect(() => {
+        if (!videoId) return
+        axios.get(`/api/posts/${videoId}/comments`)
+            .then(res => {
+                setComments(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },[videoId])
     
     const getVideoRefByPostId = postId => {
         return videoRefs.current[postId]
@@ -125,6 +141,31 @@ const Home = () => {
         window.history.pushState(null, document.title, getPostURL(post))
     }
 
+    const handleSubmit = () => {
+        console.log(posts)
+        // if (valueInput == '') return;
+        // axios.post(`/api/posts/${post.uuid}/comments`, {
+        //     comment: valueInput
+        // })
+        //     .then(res => {
+        //         console.log(res.data)
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //     })
+    }
+
+    const getPostURL = post => {
+        return `/@${post.user.nickname}/video/${post.id}`
+    }
+
+    const scrollPostIntoView = useCallback(post => {
+        const videoRef = getVideoRefByPostId(post.id)
+        if (videoRef) {
+            videoRef.scrollIntoView({ block: 'center' })
+        }
+    }, [])
+
     const handleCloseBtn = () => {
         const videoRef = getVideoRefByPostId(currentPost.id)
         if (videoRef) {
@@ -134,17 +175,6 @@ const Home = () => {
         setCurrentPost(null)
         window.history.back()
     }
-
-    const getPostURL = post => {
-        return `/@${post.user.nickname}/video/${post.uuid}`
-    } 
-
-    const scrollPostIntoView = useCallback(post => {
-        const videoRef = getVideoRefByPostId(post.id)
-        if (videoRef) {
-            videoRef.scrollIntoView({ block: 'center' })
-        }
-    }, [])
 
     useEffect(() => {
         if (!currentPost) return
@@ -170,30 +200,39 @@ const Home = () => {
         }
     }
 
-    
+    const handleNextPage = () => {
+        if (pagination.currentPage < pagination.totalPages) {
+            setPagination(prevState => ({
+                ...prevState,
+                currentPage: prevState.currentPage + 1
+            }))
+        }
+    }
 
     return (
-        <div style={{padding: '100px 0 20px'}}>
+        <div style={{ padding: '100px 0 20px' }}>
             {posts.map(post => (
-                <>
-                    <PostItem
-                        key={post.id}
-                        data={post}
-                        onTogglePlay={handleTogglePlay}
-                        onToggleMute={handleToggleMute}
-                        isMuted={isMuted}
-                        getVideoRef={handleVideoRef}
-                        onFollowUser={handleFollowUser}
-                        isPlaying={checkPlaying(post)}
-                        stopWhenPaused={stopWhenPaused.current}
-                        isWaypoint
-                        onEnterWaypoint={handleWaypointEnter}
-                        onLikeCount={handleLikeCount}
-                        onCommentCount={handleCommentCount}
-                        onShowDetail={handleShowDetailPost}
-                    />
-                </>
+                <PostItem
+                    data={post}
+                    onTogglePlay={handleTogglePlay}
+                    onToggleMute={handleToggleMute}
+                    isMuted={isMuted}
+                    getVideoRef={handleVideoRef}
+                    onFollowUser={handleFollowUser}
+                    isPlaying={checkPlaying(post)}
+                    stopWhenPaused={stopWhenPaused.current}
+                    isWaypoint
+                    onEnterWaypoint={handleWaypointEnter}
+                    onLikeCount={handleLikeCount}
+                    onCommentCount={handleCommentCount}
+                    onShowDetail={handleShowDetailPost}
+                />
             ))}
+
+            <Waypoint
+                onEnter={handleNextPage}
+            >
+            </Waypoint>
             
             {currentPost && (
                 <PostDetailModal
@@ -204,7 +243,16 @@ const Home = () => {
                     onNextVideo={handleNextVideo}
                     onPrevVideo={handlePrevVideo}
                     currentTime={currentVideoRef.current}
-                />
+                    onSubmit={handleSubmit}
+                    dataComment={comments}
+                >
+                    {comments.map(comment => (
+                        <Comment
+                            comment={comment}
+                        />
+                    ))}
+                
+                </PostDetailModal>
             )}
         </div>
     );

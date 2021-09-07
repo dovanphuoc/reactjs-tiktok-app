@@ -9,7 +9,7 @@ function Popper({
     render = () => null,
     appendTo = () => document.body,
     wrapperClassname = '',
-    onClickOutside = () => { },
+    onClickOutside = () => {},
     content = '',
     ...props
 }) {

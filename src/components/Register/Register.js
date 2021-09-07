@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from '../common/Button';
 import styles from './Register.module.scss'
 import { AiFillCloseCircle } from 'react-icons/ai'

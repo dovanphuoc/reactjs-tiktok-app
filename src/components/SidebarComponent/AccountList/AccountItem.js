@@ -24,7 +24,7 @@ const AccountItem = ({
             {...props}
             className={styles.userItem}
         >
-            <Link to={config.routes.home}>
+            <Link to={`${config.routes.home}@${nickname}`}>
                 <div className={styles.userInner}>
                     <div className={styles.userAvatar}>
                         <img src={avatar} alt="avatar" />

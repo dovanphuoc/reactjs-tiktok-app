@@ -3,9 +3,9 @@ const config = {
     routes: {
         home: '/',
         follow: '/follow',
-        postDetail: '/:nickname/video/:videoId',
+        postDetail: '/@:nickname/video/:videoId',
         search: '/search',
-        followUser: '/:nickname'
+        profile: '/@:nickname'
     }
 }
 
