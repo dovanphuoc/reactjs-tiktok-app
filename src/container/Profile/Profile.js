@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosInstance'
 
@@ -15,7 +15,7 @@ const Profile = () => {
     const [currentVideo, setCurrentVideo] = useState(null)
     const [showDetail, setShowDetail] = useState(false)
     let { nickname } = useParams()
-    useEffect(() => {
+    useLayoutEffect(() => {
         axiosInstance
             .get(`/api/users/@${nickname}`)
             .then(res => {
@@ -26,7 +26,7 @@ const Profile = () => {
             })
     },[nickname])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         axiosInstance
             .get(`/api/users/1/liked-posts`)
             .then(res => {

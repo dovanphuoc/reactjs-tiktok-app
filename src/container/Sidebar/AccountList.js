@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import axiosInstance from '../../axiosInstance';
 import Popper from '../../components/Popper'
 import {
@@ -19,7 +19,7 @@ const AccountList = ({
         perPage: 0,
         totalPages: 0
     })
-    useEffect(() => {
+    useLayoutEffect(() => {
         axiosInstance.get(`${apiPath}?page=${pagination.currentPage}&per_page=12`)
             .then(res => {
                 setAccounts(prevState => [

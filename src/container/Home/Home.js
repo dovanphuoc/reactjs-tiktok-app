@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useLayoutEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PostItem from '../../components/PostItem'
 import axiosInstance from '../../axiosInstance'
@@ -11,14 +11,12 @@ import Comment from '../../components/PostDetailModal/Comment'
 
 const Home = () => {
     let { videoId } = useParams()
-
     const [pagination, setPagination] = useState({
         total: 0,
         perPage: 0,
         currentPage: 1,
         totalPages: 0
     })
-
     const [posts, setPosts] = useState([])
     const [comments, setComments] = useState([])
     const [postInViewport, setPostInViewport] = useState(null)
@@ -28,7 +26,7 @@ const Home = () => {
     const currentVideoRef = useRef(null)
     const stopWhenPaused = useRef(true)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         axiosInstance
             .get(`/api/posts?type=for-you&page=${pagination.currentPage}`)
             .then(res => {
@@ -45,7 +43,7 @@ const Home = () => {
             })
     }, [pagination.currentPage])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!videoId) return
         axiosInstance.get(`/api/posts/${videoId}/comments`)
             .then(res => {
@@ -155,7 +153,7 @@ const Home = () => {
         //     })
     }
 
-     useEffect(() => {
+    useLayoutEffect(() => {
         // Disabled restore scrolled by user
         window.history.scrollRestoration = 'manual'
 
@@ -187,7 +185,7 @@ const Home = () => {
         window.history.back()
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!currentPost) return
         scrollPostIntoView(currentPost)
         window.history.replaceState(null, document.title, getPostURL(currentPost))

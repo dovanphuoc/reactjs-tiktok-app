@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import {
     Follow,
     FollowItem
@@ -14,7 +14,7 @@ const FollowContainer = () => {
         totalPages: 0,
         total: 0
     })
-    useEffect(() => {
+    useLayoutEffect(() => {
         axiosInstance
             .get(`/api/users/suggested?page=${pagination.currentPage}&per_page=12`)
             .then(res => {
