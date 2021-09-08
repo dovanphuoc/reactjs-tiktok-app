@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
+import axiosInstance from '../../axiosInstance'
 
 import {
     Profile as ProfileComponent,
@@ -16,7 +16,8 @@ const Profile = () => {
     const [showDetail, setShowDetail] = useState(false)
     let { nickname } = useParams()
     useEffect(() => {
-        axios.get(`/api/users/@${nickname}`)
+        axiosInstance
+            .get(`/api/users/@${nickname}`)
             .then(res => {
                 setUser(res.data)
             })
@@ -26,7 +27,8 @@ const Profile = () => {
     },[nickname])
 
     useEffect(() => {
-        axios.get(`/api/users/1/liked-posts`)
+        axiosInstance
+            .get(`/api/users/1/liked-posts`)
             .then(res => {
                 const newLikePosts = [...likePosts, ...res.data]
                 setLikePosts(newLikePosts)

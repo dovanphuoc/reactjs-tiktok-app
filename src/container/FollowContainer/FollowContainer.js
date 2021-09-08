@@ -3,7 +3,7 @@ import {
     Follow,
     FollowItem
 } from '../../components/Follow';
-import axios from 'axios'
+import axiosInstance from '../../axiosInstance'
 
 const FollowContainer = () => {
     const [follows, setFollows] = useState([])
@@ -15,7 +15,8 @@ const FollowContainer = () => {
         total: 0
     })
     useEffect(() => {
-        axios.get(`/api/users/suggested?page=${pagination.currentPage}&per_page=12`)
+        axiosInstance
+            .get(`/api/users/suggested?page=${pagination.currentPage}&per_page=12`)
             .then(res => {
                 const accounts = res.data
                 setFollows(prevState => [

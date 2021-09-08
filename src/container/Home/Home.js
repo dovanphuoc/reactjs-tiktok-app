@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import PostItem from '../../components/PostItem'
-import axios from 'axios'
+import axiosInstance from '../../axiosInstance'
 import storage from '../../../src/utils/storage'
 import {
     PostDetailModal,
@@ -29,7 +29,8 @@ const Home = () => {
     const stopWhenPaused = useRef(true)
 
     useEffect(() => {
-        axios.get(`/api/posts?type=for-you&page=${pagination.currentPage}`)
+        axiosInstance
+            .get(`/api/posts?type=for-you&page=${pagination.currentPage}`)
             .then(res => {
                 setPosts(prevState => [
                     ...prevState,
@@ -42,14 +43,11 @@ const Home = () => {
                     totalPages: res.meta.pagination.total_pages,
                 })
             })
-            .catch(err => {
-                console.log(err)
-            })
     }, [pagination.currentPage])
 
     useEffect(() => {
         if (!videoId) return
-        axios.get(`/api/posts/${videoId}/comments`)
+        axiosInstance.get(`/api/posts/${videoId}/comments`)
             .then(res => {
                 setComments(res.data)
             })
@@ -94,7 +92,8 @@ const Home = () => {
 
     const handleFollowUser = (post) => {
         let apiPath = `/api/users/${post.user.id}/${post.user.is_followed ? 'unfollow' : 'follow'}`
-        axios.post(apiPath)
+        axiosInstance
+            .post(apiPath)
             .then(res => {
                 const index = posts.findIndex(item => item.id === post.id)
                 const newPost = posts[index]
@@ -115,7 +114,7 @@ const Home = () => {
     }
 
     const handleLikeCount = post => {
-        axios.post(`/api/posts/${post.id}/${post.is_liked ? 'unlike' : 'like'}`)
+        axiosInstance.post(`/api/posts/${post.id}/${post.is_liked ? 'unlike' : 'like'}`)
             .then(res => {
                 const postIndex = posts.findIndex(item => item.id === post.id)
                 const newPost = {...res.data}
@@ -129,6 +128,7 @@ const Home = () => {
 
     const handleCommentCount = post => {
         setCurrentPost(post)
+        window.history.pushState(null, document.title, getPostURL(post))
     }
 
     const handleShowDetailPost = post => {
@@ -154,6 +154,17 @@ const Home = () => {
         //         console.log(err)
         //     })
     }
+
+     useEffect(() => {
+        // Disabled restore scrolled by user
+        window.history.scrollRestoration = 'manual'
+
+        return () => {
+            // Enabled restore scrolled by user
+            window.history.scrollRestoration = 'auto'
+        }
+    }, [])
+
 
     const getPostURL = post => {
         return `/@${post.user.nickname}/video/${post.id}`
@@ -245,15 +256,11 @@ const Home = () => {
                     currentTime={currentVideoRef.current}
                     onSubmit={handleSubmit}
                     dataComment={comments}
-                >
-                    {comments.map(comment => (
-                        <Comment
-                            comment={comment}
-                        />
-                    ))}
-                
-                </PostDetailModal>
+                />
             )}
+                {/* <Comment
+                    comment={comments}
+                /> */}
         </div>
     );
 };
