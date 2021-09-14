@@ -4,7 +4,11 @@
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-
+    .videoCardMask {
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0));
+        inset: 0;
+        position: absolute;
+    }
     .followItem {
         max-width: calc(100% / 3);
         flex-basis: calc(100% / 3);

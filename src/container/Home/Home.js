@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback, useLayoutEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import PostItem from '../../components/PostItem'
 import axiosInstance from '../../axiosInstance'
 import storage from '../../../src/utils/storage'
@@ -7,10 +6,9 @@ import {
     PostDetailModal,
 } from '../../components/PostDetailModal';
 import { Waypoint } from 'react-waypoint';
-import Comment from '../../components/PostDetailModal/Comment'
+
 
 const Home = () => {
-    let { videoId } = useParams()
     const [pagination, setPagination] = useState({
         total: 0,
         perPage: 0,
@@ -23,6 +21,7 @@ const Home = () => {
     const [isMuted, setIsMuted] = useState(storage.get('isMuted', true))
     const [currentPost, setCurrentPost] = useState(null)
     const videoRefs = useRef({})
+    const [valueInput, setValueInput] = useState('')
     const currentVideoRef = useRef(null)
     const stopWhenPaused = useRef(true)
 
@@ -42,17 +41,19 @@ const Home = () => {
                 })
             })
     }, [pagination.currentPage])
-
-    useLayoutEffect(() => {
-        if (!videoId) return
-        axiosInstance.get(`/api/posts/${videoId}/comments`)
-            .then(res => {
-                setComments(res.data)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    },[videoId])
+    // useEffect(() => {
+    //     if (!id) return
+    //     console.log(id)
+    //     axiosInstance
+    //         .get(`/api/posts/${id}/comments`)
+    //         .then(res => {
+    //             console.log(res.data)
+    //             setComments(res.data)
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //         })
+    // },[id])
     
     const getVideoRefByPostId = postId => {
         return videoRefs.current[postId]
@@ -139,14 +140,15 @@ const Home = () => {
         window.history.pushState(null, document.title, getPostURL(post))
     }
 
-    const handleSubmit = () => {
-        console.log(posts)
-        // if (valueInput == '') return;
-        // axios.post(`/api/posts/${post.uuid}/comments`, {
+    const handleSubmit = post => {
+        // console.log(post)
+        // if (valueInput === '') return;
+        // axiosInstance
+        //     .post(`/api/posts/${post.uuid}/comments`, {
         //     comment: valueInput
         // })
         //     .then(res => {
-        //         console.log(res.data)
+        //         setComments(res.data)
         //     })
         //     .catch(err => {
         //         console.log(err)
@@ -218,10 +220,15 @@ const Home = () => {
         }
     }
 
+    const handleChangeValue = e => {
+        setValueInput(e.target.value)
+    }
+
     return (
         <div style={{ padding: '100px 0 20px' }}>
             {posts.map(post => (
                 <PostItem
+                    key={post.id}
                     data={post}
                     onTogglePlay={handleTogglePlay}
                     onToggleMute={handleToggleMute}
@@ -245,20 +252,18 @@ const Home = () => {
             
             {currentPost && (
                 <PostDetailModal
+                    key={currentPost.id}
                     data={currentPost}
                     onCloseBtn={handleCloseBtn}
                     isMuted={isMuted}
                     onToggleMute={handleToggleMute}
                     onNextVideo={handleNextVideo}
                     onPrevVideo={handlePrevVideo}
-                    currentTime={currentVideoRef.current}
                     onSubmit={handleSubmit}
                     dataComment={comments}
+                    onChangeValue={handleChangeValue}
                 />
             )}
-                {/* <Comment
-                    comment={comments}
-                /> */}
         </div>
     );
 };

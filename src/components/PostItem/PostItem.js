@@ -10,6 +10,7 @@ import { FaCommentDots, FaShare } from 'react-icons/fa'
 import Modal from 'react-modal'
 import Login from '../Login'
 import { Waypoint } from 'react-waypoint'
+import userImage from '../../assets/img/user.jpg'
 
 const customStyles = {
     content: {
@@ -43,6 +44,8 @@ const PostItem = ({
 }) => {
     const [MODAL, SET_MODAL] = useState(null)
     const videoRef = useRef(null)
+    const imageRef = useRef(null)
+
     useEffect(() => {
         if (!videoRef.current) return
         if (isPlaying) {
@@ -78,22 +81,32 @@ const PostItem = ({
         return (window.innerHeight - 60) / 3
     }
 
+    const handleErrorImage = () => {
+        imageRef.current.src = userImage
+    }
+
     return (
         <div className={styles.postItem}>
             <Link to={`${config.routes.home}@${data.user.first_name} ${data.user.last_name}`} className={styles.userAvatar}>
-                <img src={data.user.avatar} alt={data.user.nickname} className={styles.avatarImg} />
+                <img
+                    src={data.user.avatar}
+                    alt={data.user.nickname}
+                    className={styles.avatarImg}
+                    onError={handleErrorImage}
+                    ref={imageRef}
+                />
             </Link>
             <div className={styles.postContent}>
                 <div className={styles.infoContent}>
                     <Link to={`${config.routes.home}@${data.user.first_name} ${data.user.last_name}`} rel="noopener">
                         <h3 className={styles.authorUnique}>{data.user.nickname}</h3>
                     </Link>
-                    <Link to={`${config.routes.home}/${data.user.first_name} ${data.user.last_name}`} rel="noopener">
+                    <Link to={`${config.routes.home}${data.user.first_name} ${data.user.last_name}`} rel="noopener">
                         <h4 className={styles.fullName}>{`${data.user.first_name} ${data.user.last_name}`}</h4>
                     </Link>
                 </div>
                 <div className={styles.caption}>
-                    <Link to={`${config.routes.home}/${data.user.first_name} ${data.user.last_name}`} rel="noopener">
+                    <Link to={`${config.routes.home}${data.user.first_name} ${data.user.last_name}`} rel="noopener">
                         <strong>{hastag}</strong>
                     </Link>
                     <strong>{data.description}</strong>
@@ -164,7 +177,6 @@ const PostItem = ({
                                 </Waypoint>
                             )}
                             <span className={styles.overlay} />
-
                             <button className={[styles.btn, styles.playBtn].join(' ')}
                                 onClick={() => onTogglePlay(data)}
                             >

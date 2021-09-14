@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import HeaderComponent from '../../components/HeaderComponent'
-import axios from 'axios';
+import axiosInstance from '../../axiosInstance'
 import { useHistory } from 'react-router-dom';
 import config from '../../config'
 import { useDebounce } from '../../hooks'
@@ -49,7 +49,8 @@ const Header = () => {
     useDebounce(() => {
         if (!valueInput)
             return setSearchResult([])
-        axios.get(`/api/users/search?q=${valueInput}&type=less&page=1`)
+        axiosInstance
+            .get(`/api/users/search?q=${valueInput}&type=less&page=1`)
             .then(res => {
                 setSearchResult(res.data)
             })
@@ -60,7 +61,8 @@ const Header = () => {
 
     const handleLoginForm = () => {
         if (token) {
-            axios.post('/api/auth/me')
+            axiosInstance
+                .post('/api/auth/me')
                 .then(res => {
                     setUser(res.data)
                 })

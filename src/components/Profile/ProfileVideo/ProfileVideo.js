@@ -35,6 +35,14 @@ const ProfileVideo = ({
         overflow: 'hidden',
         background: `url(${data.thumb_url})`
     }
+
+    const handleMouseEnter = () => {
+        videoRef.current.src = data.file_url
+    }
+
+    const handleMouseLeave = () => {
+        videoRef.current.src = ''
+    }
     return (
         <div className={styles.videoItem}
             onMouseEnter={() => onMouseEnter(data)}
@@ -44,13 +52,15 @@ const ProfileVideo = ({
                 <div style={{ paddingTop: '132.653%' }}>
                     <div className={styles.ratioWrapper}>
                         <div style={cardStyles}>
-                            <div className={styles.videoCardDefault}>
+                            <div
+                                className={styles.videoCardDefault}
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
+                            >
                                 <video
                                     className={styles.video}
-                                    src={data.file_url}
                                     loop
                                     muted={isMuted}
-                                    poster={data.thumb_url}
                                     ref={videoRef}
                                 />
                                 <div className={styles.videoCardMask}>

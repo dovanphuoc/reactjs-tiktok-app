@@ -7,7 +7,7 @@ const initialState = {
 const avatar = (state = initialState, action) => {
     switch (action.type) {
         case GET_AVATAR:
-            const currentUser = action.payload
+            // const currentUser = action.payload
             return {
                 ...state,
                 // currentUser: 

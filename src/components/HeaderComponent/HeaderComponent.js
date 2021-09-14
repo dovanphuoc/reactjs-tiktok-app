@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styles from './HeaderComponent.module.scss'
 import { Link } from 'react-router-dom';
-import config from '../../config'
 import logo from '../../assets/img/logo.svg'
 import { GoSearch } from 'react-icons/go'
 import { BsThreeDotsVertical, BsCloudUpload } from 'react-icons/bs'
@@ -11,12 +10,12 @@ import { IoIosCloseCircle } from 'react-icons/io'
 import { FiSend } from 'react-icons/fi'
 import { BiCommentMinus } from 'react-icons/bi'
 import Button from '../common/Button'
-import MenuItem from '../Popper/MenuItem'
-import Popper from '../Popper'
+import Popper, { MenuItem } from '../Popper'
 import SearchPreview, { ResultItem } from '../SearchPreview'
 import Modal from 'react-modal'
 import Login from '../Login'
 import Tooltip from '../Tooltip';
+import config from '../../config';
 
 const LOGIN_MODAL = 'LOGIN_MODAL'
 const customStyles = {
@@ -89,11 +88,9 @@ const HeaderComponent = ({
     return (
         <div className={`${styles.headerContainer} ${styles.middle}`}>
             <div className={styles.headerContent}>
-                <div className={styles.logo}>
-                    <Link to={config.routes.home}>
-                        <img src={logo} alt="logo" />
-                    </Link>
-                </div>
+                <Link to={config.routes.home}>
+                    <img src={logo} alt="logo" />
+                </Link>
                 <Popper
                     interactive
                     wrapperClassname={styles.previewWrapper}

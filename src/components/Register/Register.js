@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from '../common/Button';
 import styles from './Register.module.scss'
 import { AiFillCloseCircle } from 'react-icons/ai'
-import axios from 'axios'
+import axiosInstance from '../../axiosInstance'
 
 const defaultFn = () => {}
 const Register = ({
@@ -18,7 +18,8 @@ const Register = ({
 
     const handleSubmitForm = (e) => {
         e.preventDefault()
-        axios.post('/api/auth/register', user)
+        axiosInstance
+            .post('/api/auth/register', user)
             .then(res => {
                 window.localStorage.setItem('token', res.meta.token)
                 window.location.reload()

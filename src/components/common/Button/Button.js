@@ -25,7 +25,7 @@ const Button = ({
     ...restProps
 }) => {
     let Component = 'button'
-    const props = {}
+    const rests = {}
     let classNames = [
         styles.wrapper,
         styles[type],
@@ -43,18 +43,18 @@ const Button = ({
     ]
     if (href) {
         Component = 'a'
-        props.href = href
+        rests.href = href
         if (openNewTab) {
-            props.target = '_blank'
+            rests.target = '_blank'
         }
     }
     if (to) {
         Component = Link
-        props.to = to
+        rests.to = to
     }
     return (
         <Component
-            {...props}
+            {...rests}
             {...restProps}
             onClick={onClick}
             className={classNames.join(' ')}

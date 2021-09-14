@@ -38,9 +38,6 @@ const FollowContainer = () => {
             })
     }, [pagination.currentPage])
 
-    const checkPlaying = account => {
-        return !!currentAccount && currentAccount.id === account.id
-    }
     const handleMouseEnter = account => {
         setCurrentAccount(account)
     }
@@ -52,7 +49,6 @@ const FollowContainer = () => {
                     <FollowItem
                         key={account.id}
                         data={account}
-                        isPlaying={checkPlaying(account)}
                         onMouseEnter={handleMouseEnter}
                     />                        
                 ))}

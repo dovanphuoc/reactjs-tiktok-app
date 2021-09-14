@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './TopSidebar.module.scss'
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import config from '../../../config'
 import { AiFillHome, AiOutlineUsergroupDelete } from 'react-icons/ai'
 import { BsCameraVideo } from 'react-icons/bs'
@@ -44,7 +44,7 @@ const TopSidebar = ({
             </NavLink>
             <NavLink
                 className={styles.navItem}
-                to={config.routes.home}
+                to={`${config.routes.follow}`}
                 activeStyle={{
                     fontWeight: "700",
                     color: "#161823"
@@ -52,7 +52,7 @@ const TopSidebar = ({
             >
                 <div className={styles.iconWrap}>
                     <AiOutlineUsergroupDelete className={styles.icon} />
-                    <Link className={styles.followLink} to={config.routes.follow}>Đang Follow</Link>
+                    <span>Đang Follow</span>
                 </div>
             </NavLink>
             {token ? (
@@ -66,7 +66,7 @@ const TopSidebar = ({
                 >
                     <div className={styles.iconWrap}>
                         <BsCameraVideo className={styles.icon} />
-                        <Link className={styles.followLink} to={config.routes.follow}>Live</Link>
+                        <span>Video</span>
                     </div>
                 </NavLink>
             ): (

@@ -72,8 +72,6 @@ const Profile = () => {
                         showDetail={showDetail}
                     />
                 ))}
-
-
             </div>
         </ProfileComponent>
     );
