@@ -49,7 +49,7 @@ function FollowItem({
           video.onpause = null;
           video.ontimeupdate = null;
         };
-      }, []);
+      }, [])
     
     const handleMouseEnter = () => {
         videoRef.current.src = data.popular_post.file_url

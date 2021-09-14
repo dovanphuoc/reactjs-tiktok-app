@@ -13,7 +13,6 @@ const Profile = () => {
     const [user, setUser] = useState({})
     const [likePosts, setLikePosts] = useState([])
     const [currentVideo, setCurrentVideo] = useState(null)
-    const [showDetail, setShowDetail] = useState(false)
     let { nickname } = useParams()
     useLayoutEffect(() => {
         axiosInstance
@@ -37,18 +36,9 @@ const Profile = () => {
                 console.log(err)
             })
     }, [])
-
-    const checkPlaying = video => {
-        return !!currentVideo && currentVideo.id === video.id
-    }
     
     const handleMouseEnter = video => {
         setCurrentVideo(video)
-    }
-    
-    const handleShowDetail = video => {
-        window.history.pushState(null, document.title, `@${nickname}/video/${video.id}`)
-        setShowDetail(true)
     }
 
     return (
@@ -67,9 +57,6 @@ const Profile = () => {
                         key={likePost.uuid}
                         data={likePost}
                         onMouseEnter={handleMouseEnter}
-                        isPlaying={checkPlaying(likePost)}
-                        onShowDetail={handleShowDetail}
-                        showDetail={showDetail}
                     />
                 ))}
             </div>

@@ -40,7 +40,6 @@ const PostItem = ({
     onEnterWaypoint = defaultFn,
     onLikeCount = defaultFn,
     onCommentCount = defaultFn,
-    onShareCount = defaultFn,
 }) => {
     const [MODAL, SET_MODAL] = useState(null)
     const videoRef = useRef(null)

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styles from './ProfileVideo.module.scss'
 import { BsPlay } from 'react-icons/bs'
 
@@ -7,21 +7,30 @@ const ProfileVideo = ({
     data,
     isMuted = false,
     onMouseEnter = defaultFn,
-    onShowDetail = defaultFn,
-    showDetail = false,
-    isPlaying = false
 }) => {
     const videoRef = useRef(null)
-
+    const [isPlaying, setIsPlaying] = useState(false);
     useEffect(() => {
-        if (!videoRef.current) return
-        if (isPlaying) {
-            videoRef.current.play()
-        } else {
-            videoRef.current.pause()
-            videoRef.current.currentTime = 0
-        }
-    },[isPlaying])
+        const video = videoRef.current;
+        video.oncanplay = () => {
+          setIsPlaying(!isPlaying);
+          video.play();
+        };
+    
+        video.onplay = () => {
+          setIsPlaying(!isPlaying);
+        };
+    
+        video.onpause = () => {
+          setIsPlaying(false);
+        };
+
+        return () => {
+          video.oncanplaythrough = null;
+          video.onplay = null;
+          video.onpause = null;
+        };
+      }, []);
 
     const cardStyles = {
         width: '100%',
@@ -46,7 +55,6 @@ const ProfileVideo = ({
     return (
         <div className={styles.videoItem}
             onMouseEnter={() => onMouseEnter(data)}
-            onClick={() => onShowDetail(data)}
         >
             <div className={styles.ratio}>
                 <div style={{ paddingTop: '132.653%' }}>

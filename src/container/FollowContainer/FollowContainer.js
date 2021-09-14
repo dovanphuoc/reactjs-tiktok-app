@@ -4,6 +4,7 @@ import {
     FollowItem
 } from '../../components/Follow';
 import axiosInstance from '../../axiosInstance'
+import { Waypoint } from 'react-waypoint';
 
 const FollowContainer = () => {
     const [follows, setFollows] = useState([])
@@ -42,6 +43,15 @@ const FollowContainer = () => {
         setCurrentAccount(account)
     }
 
+    const handleNextPage = () => {
+        if (pagination.currentPage < pagination.totalPages) {
+            setPagination(prevState => ({
+                ...prevState,
+                currentPage: prevState.currentPage + 1
+            }))
+        }
+    }
+
     return (
         <>
             <Follow>
@@ -53,6 +63,10 @@ const FollowContainer = () => {
                     />                        
                 ))}
             </Follow>
+            <Waypoint
+                onEnter={handleNextPage}
+            >
+            </Waypoint>
         </>
     );
 };

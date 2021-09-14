@@ -200,6 +200,23 @@ const PostDetailModal = ({
                             <div className={styles.copyContainer}>Sao chép liên kết</div>
                         </div>
                     </div>
+                    <div className={styles.commentContainer}>
+                        <div className={styles.logoutContainer}>
+                            <h3>Đăng nhập để xem bình luận</h3>
+                            <p className={styles.desc}>Đăng nhập để xem bình luận và thích video</p>
+                            <Button
+                                children="Đăng nhập"
+                                color="white"
+                                size="xxl"
+                                type="primary"
+                                hover
+                            />
+                            <p className={styles.signUp}>
+                                Bạn không có tài khoản?
+                                <span className={styles.loginBtn}>Đăng ký</span>
+                            </p>
+                        </div>
+                    </div>
                     {/* <>
                         <div className={styles.commentContainer}>
                             <div className={styles.comments}>
