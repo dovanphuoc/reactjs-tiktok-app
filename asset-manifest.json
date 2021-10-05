@@ -16,8 +16,8 @@
     "main.css": "/reactjs-tiktok-app/static/css/main.4c42a2c6.chunk.css",
     "main.js": "/reactjs-tiktok-app/static/js/main.75ddfb40.chunk.js",
     "main.js.map": "/reactjs-tiktok-app/static/js/main.75ddfb40.chunk.js.map",
-    "runtime-main.js": "/reactjs-tiktok-app/static/js/runtime-main.0fb89d1a.js",
-    "runtime-main.js.map": "/reactjs-tiktok-app/static/js/runtime-main.0fb89d1a.js.map",
+    "runtime-main.js": "/reactjs-tiktok-app/static/js/runtime-main.7ce02f5c.js",
+    "runtime-main.js.map": "/reactjs-tiktok-app/static/js/runtime-main.7ce02f5c.js.map",
     "static/js/8.90bfc04c.chunk.js": "/reactjs-tiktok-app/static/js/8.90bfc04c.chunk.js",
     "static/js/8.90bfc04c.chunk.js.map": "/reactjs-tiktok-app/static/js/8.90bfc04c.chunk.js.map",
     "static/css/9.8b6c36b9.chunk.css": "/reactjs-tiktok-app/static/css/9.8b6c36b9.chunk.css",
@@ -27,8 +27,8 @@
     "static/js/10.861f0193.chunk.js": "/reactjs-tiktok-app/static/js/10.861f0193.chunk.js",
     "static/js/10.861f0193.chunk.js.map": "/reactjs-tiktok-app/static/js/10.861f0193.chunk.js.map",
     "static/css/11.fcefc1d8.chunk.css": "/reactjs-tiktok-app/static/css/11.fcefc1d8.chunk.css",
-    "static/js/11.7ff9a632.chunk.js": "/reactjs-tiktok-app/static/js/11.7ff9a632.chunk.js",
-    "static/js/11.7ff9a632.chunk.js.map": "/reactjs-tiktok-app/static/js/11.7ff9a632.chunk.js.map",
+    "static/js/11.23260502.chunk.js": "/reactjs-tiktok-app/static/js/11.23260502.chunk.js",
+    "static/js/11.23260502.chunk.js.map": "/reactjs-tiktok-app/static/js/11.23260502.chunk.js.map",
     "static/css/12.450f635a.chunk.css": "/reactjs-tiktok-app/static/css/12.450f635a.chunk.css",
     "static/js/12.c6777273.chunk.js": "/reactjs-tiktok-app/static/js/12.c6777273.chunk.js",
     "static/js/12.c6777273.chunk.js.map": "/reactjs-tiktok-app/static/js/12.c6777273.chunk.js.map",
@@ -55,7 +55,7 @@
     "static/media/thumb.e50a82dd.svg": "/reactjs-tiktok-app/static/media/thumb.e50a82dd.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.0fb89d1a.js",
+    "static/js/runtime-main.7ce02f5c.js",
     "static/js/8.90bfc04c.chunk.js",
     "static/css/main.4c42a2c6.chunk.css",
     "static/js/main.75ddfb40.chunk.js"
