@@ -1,271 +1,264 @@
-import React, { useState, useRef, useCallback, useLayoutEffect } from 'react';
+import React, { useState, useRef, useCallback, useLayoutEffect } from 'react'
 import PostItem from '../../components/PostItem'
 import axiosInstance from '../../axiosInstance'
 import storage from '../../../src/utils/storage'
-import {
-    PostDetailModal,
-} from '../../components/PostDetailModal';
-import { Waypoint } from 'react-waypoint';
-
+import { PostDetailModal } from '../../components/PostDetailModal'
+import { Waypoint } from 'react-waypoint'
 
 const Home = () => {
-    const [pagination, setPagination] = useState({
-        total: 0,
-        perPage: 0,
-        currentPage: 1,
-        totalPages: 0
-    })
-    const [posts, setPosts] = useState([])
-    const [comments, setComments] = useState([])
-    const [postInViewport, setPostInViewport] = useState(null)
-    const [isMuted, setIsMuted] = useState(storage.get('isMuted', true))
-    const [currentPost, setCurrentPost] = useState(null)
-    const videoRefs = useRef({})
-    const [valueInput, setValueInput] = useState('')
-    const currentVideoRef = useRef(null)
-    const stopWhenPaused = useRef(true)
+  const [pagination, setPagination] = useState({
+    total: 0,
+    perPage: 0,
+    currentPage: 1,
+    totalPages: 0,
+  })
+  const [posts, setPosts] = useState([])
+  const [comments, setComments] = useState([])
+  const [postInViewport, setPostInViewport] = useState(null)
+  const [isMuted, setIsMuted] = useState(storage.get('isMuted', true))
+  const [currentPost, setCurrentPost] = useState(null)
+  const videoRefs = useRef({})
+  const [valueInput, setValueInput] = useState('')
+  const currentVideoRef = useRef(null)
+  const stopWhenPaused = useRef(true)
 
-    useLayoutEffect(() => {
-        axiosInstance
-            .get(`/api/posts?type=for-you&page=${pagination.currentPage}`)
-            .then(res => {
-                setPosts(prevState => [
-                    ...prevState,
-                    ...res.data
-                ])
-                setPagination({
-                    currentPage: res.meta.pagination.current_page,
-                    total: res.meta.pagination.total,
-                    perPage: res.meta.pagination.per_page,
-                    totalPages: res.meta.pagination.total_pages,
-                })
-            })
-    }, [pagination.currentPage])
-    // useEffect(() => {
-    //     if (!id) return
-    //     console.log(id)
-    //     axiosInstance
-    //         .get(`/api/posts/${id}/comments`)
-    //         .then(res => {
-    //             console.log(res.data)
-    //             setComments(res.data)
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //         })
-    // },[id])
-    
-    const getVideoRefByPostId = postId => {
-        return videoRefs.current[postId]
+  useLayoutEffect(() => {
+    axiosInstance
+      .get(`/api/videos?type=for-you&page=${pagination.currentPage}`)
+      .then((res) => {
+        setPosts((prevState) => [...prevState, ...res.data])
+        setPagination({
+          currentPage: res.meta.pagination.current_page,
+          total: res.meta.pagination.total,
+          perPage: res.meta.pagination.per_page,
+          totalPages: res.meta.pagination.total_pages,
+        })
+      })
+  }, [pagination.currentPage])
+  // useEffect(() => {
+  //     if (!id) return
+  //     console.log(id)
+  //     axiosInstance
+  //         .get(`/api/posts/${id}/comments`)
+  //         .then(res => {
+  //             console.log(res.data)
+  //             setComments(res.data)
+  //         })
+  //         .catch(err => {
+  //             console.log(err)
+  //         })
+  // },[id])
+
+  const getVideoRefByPostId = (postId) => {
+    return videoRefs.current[postId]
+  }
+
+  const setVideoRefByPostId = (postId, ref) => {
+    return (videoRefs.current[postId] = ref)
+  }
+
+  const handleVideoRef = (ref, post) => {
+    setVideoRefByPostId(post.id, ref)
+  }
+
+  const checkPlaying = (post) => {
+    return postInViewport && postInViewport.id === post.id
+  }
+
+  const handleToggleMute = (post) => {
+    const videoRef = getVideoRefByPostId(post.id)
+    if (videoRef) {
+      videoRef.muted = !videoRef.muted
+      setIsMuted(videoRef.muted)
+      storage.set('isMuted', videoRef.muted)
     }
+  }
 
-    const setVideoRefByPostId = (postId, ref) => {
-        return videoRefs.current[postId] = ref
+  const handleTogglePlay = (post) => {
+    stopWhenPaused.current = false
+    if (checkPlaying(post)) {
+      setPostInViewport(null)
+    } else {
+      setPostInViewport(post)
     }
-    
-    const handleVideoRef = (ref, post) => {
-        setVideoRefByPostId(post.id, ref)
+  }
+
+  const handleFollowUser = (post) => {
+    let apiPath = `/api/users/${post.user.id}/${
+      post.user.is_followed ? 'unfollow' : 'follow'
+    }`
+    axiosInstance
+      .post(apiPath)
+      .then((res) => {
+        const index = posts.findIndex((item) => item.id === post.id)
+        const newPost = posts[index]
+        newPost.user = res.data
+        const newPosts = [...posts]
+        newPosts.splice(index, 1, newPost)
+        setPosts(newPosts)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  const handleWaypointEnter = (post) => {
+    if (currentPost) return
+    stopWhenPaused.current = true
+    setPostInViewport(post)
+  }
+
+  const handleLikeCount = (post) => {
+    axiosInstance
+      .post(`/api/posts/${post.id}/${post.is_liked ? 'unlike' : 'like'}`)
+      .then((res) => {
+        const postIndex = posts.findIndex((item) => item.id === post.id)
+        const newPost = { ...res.data }
+        posts.splice(postIndex, 1, newPost)
+        setPosts(posts.slice(0))
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  const handleCommentCount = (post) => {
+    setCurrentPost(post)
+    window.history.pushState(null, document.title, getPostURL(post))
+  }
+
+  const handleShowDetailPost = (post) => {
+    const videoRef = getVideoRefByPostId(post.id)
+    if (videoRef) {
+      videoRef.pause()
+      currentVideoRef.current = videoRef.currentTime
     }
+    setCurrentPost(post)
+    window.history.pushState(null, document.title, getPostURL(post))
+  }
 
-    const checkPlaying = post => {
-        return postInViewport && postInViewport.id === post.id
+  const handleSubmit = (post) => {
+    // console.log(post)
+    // if (valueInput === '') return;
+    // axiosInstance
+    //     .post(`/api/posts/${post.uuid}/comments`, {
+    //     comment: valueInput
+    // })
+    //     .then(res => {
+    //         setComments(res.data)
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //     })
+  }
+
+  useLayoutEffect(() => {
+    // Disabled restore scrolled by user
+    window.history.scrollRestoration = 'manual'
+
+    return () => {
+      // Enabled restore scrolled by user
+      window.history.scrollRestoration = 'auto'
     }
+  }, [])
 
-    const handleToggleMute = post => {
-        const videoRef = getVideoRefByPostId(post.id)
-        if (videoRef) {
-            videoRef.muted = !videoRef.muted
-            setIsMuted(videoRef.muted)
-            storage.set('isMuted', videoRef.muted)
-        }
+  const getPostURL = (post) => {
+    return `/@${post.user.nickname}/video/${post.id}`
+  }
+
+  const scrollPostIntoView = useCallback((post) => {
+    const videoRef = getVideoRefByPostId(post.id)
+    if (videoRef) {
+      videoRef.scrollIntoView({ block: 'center' })
     }
+  }, [])
 
-    const handleTogglePlay = (post) => {
-        stopWhenPaused.current = false
-        if (checkPlaying(post)) {
-            setPostInViewport(null)
-        } else {
-            setPostInViewport(post)
-        }
+  const handleCloseBtn = () => {
+    const videoRef = getVideoRefByPostId(currentPost.id)
+    if (videoRef) {
+      videoRef.currentTime = currentVideoRef.current
+      videoRef.play()
     }
+    setCurrentPost(null)
+    window.history.back()
+  }
 
-    const handleFollowUser = (post) => {
-        let apiPath = `/api/users/${post.user.id}/${post.user.is_followed ? 'unfollow' : 'follow'}`
-        axiosInstance
-            .post(apiPath)
-            .then(res => {
-                const index = posts.findIndex(item => item.id === post.id)
-                const newPost = posts[index]
-                newPost.user = res.data
-                const newPosts = [...posts]
-                newPosts.splice(index, 1, newPost)
-                setPosts(newPosts)
-            })
-            .catch(err => {
-                console.log(err)
-            })
+  useLayoutEffect(() => {
+    if (!currentPost) return
+    scrollPostIntoView(currentPost)
+    window.history.replaceState(null, document.title, getPostURL(currentPost))
+  }, [currentPost, scrollPostIntoView])
+
+  const handleNextVideo = () => {
+    currentVideoRef.current = 0
+    const currentIndex = posts.findIndex((post) => post.id === currentPost.id)
+    if (currentIndex <= posts.length - 1) {
+      let newPost = posts[currentIndex + 1]
+      setCurrentPost(newPost)
     }
+  }
 
-    const handleWaypointEnter = (post) => {
-        if (currentPost) return
-        stopWhenPaused.current = true
-        setPostInViewport(post)
+  const handlePrevVideo = () => {
+    currentVideoRef.current = 0
+    const currentIndex = posts.findIndex((post) => post.id === currentPost.id)
+    if (currentIndex >= 0) {
+      let newPost = posts[currentIndex - 1]
+      setCurrentPost(newPost)
     }
+  }
 
-    const handleLikeCount = post => {
-        axiosInstance.post(`/api/posts/${post.id}/${post.is_liked ? 'unlike' : 'like'}`)
-            .then(res => {
-                const postIndex = posts.findIndex(item => item.id === post.id)
-                const newPost = {...res.data}
-                posts.splice(postIndex, 1, newPost)
-                setPosts(posts.slice(0))
-            })
-            .catch(err => {
-                console.log(err)
-            })
+  const handleNextPage = () => {
+    if (pagination.currentPage < pagination.totalPages) {
+      setPagination((prevState) => ({
+        ...prevState,
+        currentPage: prevState.currentPage + 1,
+      }))
     }
+  }
 
-    const handleCommentCount = post => {
-        setCurrentPost(post)
-        window.history.pushState(null, document.title, getPostURL(post))
-    }
+  const handleChangeValue = (e) => {
+    setValueInput(e.target.value)
+  }
 
-    const handleShowDetailPost = post => {
-        const videoRef = getVideoRefByPostId(post.id)
-        if (videoRef) {
-            videoRef.pause()
-            currentVideoRef.current = videoRef.currentTime
-        }
-        setCurrentPost(post)
-        window.history.pushState(null, document.title, getPostURL(post))
-    }
+  return (
+    <div style={{ padding: '100px 0 20px' }}>
+      {posts.map((post) => (
+        <PostItem
+          key={post.id}
+          data={post}
+          onTogglePlay={handleTogglePlay}
+          onToggleMute={handleToggleMute}
+          isMuted={isMuted}
+          getVideoRef={handleVideoRef}
+          onFollowUser={handleFollowUser}
+          isPlaying={checkPlaying(post)}
+          stopWhenPaused={stopWhenPaused.current}
+          isWaypoint
+          onEnterWaypoint={handleWaypointEnter}
+          onLikeCount={handleLikeCount}
+          onCommentCount={handleCommentCount}
+          onShowDetail={handleShowDetailPost}
+        />
+      ))}
 
-    const handleSubmit = post => {
-        // console.log(post)
-        // if (valueInput === '') return;
-        // axiosInstance
-        //     .post(`/api/posts/${post.uuid}/comments`, {
-        //     comment: valueInput
-        // })
-        //     .then(res => {
-        //         setComments(res.data)
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //     })
-    }
+      <Waypoint onEnter={handleNextPage}></Waypoint>
 
-    useLayoutEffect(() => {
-        // Disabled restore scrolled by user
-        window.history.scrollRestoration = 'manual'
+      {currentPost && (
+        <PostDetailModal
+          key={currentPost.id}
+          data={currentPost}
+          onCloseBtn={handleCloseBtn}
+          isMuted={isMuted}
+          onToggleMute={handleToggleMute}
+          onNextVideo={handleNextVideo}
+          onPrevVideo={handlePrevVideo}
+          onSubmit={handleSubmit}
+          dataComment={comments}
+          onChangeValue={handleChangeValue}
+        />
+      )}
+    </div>
+  )
+}
 
-        return () => {
-            // Enabled restore scrolled by user
-            window.history.scrollRestoration = 'auto'
-        }
-    }, [])
-
-
-    const getPostURL = post => {
-        return `/@${post.user.nickname}/video/${post.id}`
-    }
-
-    const scrollPostIntoView = useCallback(post => {
-        const videoRef = getVideoRefByPostId(post.id)
-        if (videoRef) {
-            videoRef.scrollIntoView({ block: 'center' })
-        }
-    }, [])
-
-    const handleCloseBtn = () => {
-        const videoRef = getVideoRefByPostId(currentPost.id)
-        if (videoRef) {
-            videoRef.currentTime = currentVideoRef.current
-            videoRef.play()
-        }
-        setCurrentPost(null)
-        window.history.back()
-    }
-
-    useLayoutEffect(() => {
-        if (!currentPost) return
-        scrollPostIntoView(currentPost)
-        window.history.replaceState(null, document.title, getPostURL(currentPost))
-    }, [currentPost, scrollPostIntoView])
-
-    const handleNextVideo = () => {
-        currentVideoRef.current = 0
-        const currentIndex = posts.findIndex(post => post.id === currentPost.id)
-        if (currentIndex <= posts.length - 1) {
-            let newPost = posts[currentIndex + 1]
-            setCurrentPost(newPost)
-        }
-    }
-
-    const handlePrevVideo = () => {
-        currentVideoRef.current = 0
-        const currentIndex = posts.findIndex(post => post.id === currentPost.id)
-        if (currentIndex >= 0) {
-            let newPost = posts[currentIndex - 1]
-            setCurrentPost(newPost)
-        }
-    }
-
-    const handleNextPage = () => {
-        if (pagination.currentPage < pagination.totalPages) {
-            setPagination(prevState => ({
-                ...prevState,
-                currentPage: prevState.currentPage + 1
-            }))
-        }
-    }
-
-    const handleChangeValue = e => {
-        setValueInput(e.target.value)
-    }
-
-    return (
-        <div style={{ padding: '100px 0 20px' }}>
-            {posts.map(post => (
-                <PostItem
-                    key={post.id}
-                    data={post}
-                    onTogglePlay={handleTogglePlay}
-                    onToggleMute={handleToggleMute}
-                    isMuted={isMuted}
-                    getVideoRef={handleVideoRef}
-                    onFollowUser={handleFollowUser}
-                    isPlaying={checkPlaying(post)}
-                    stopWhenPaused={stopWhenPaused.current}
-                    isWaypoint
-                    onEnterWaypoint={handleWaypointEnter}
-                    onLikeCount={handleLikeCount}
-                    onCommentCount={handleCommentCount}
-                    onShowDetail={handleShowDetailPost}
-                />
-            ))}
-
-            <Waypoint
-                onEnter={handleNextPage}
-            >
-            </Waypoint>
-            
-            {currentPost && (
-                <PostDetailModal
-                    key={currentPost.id}
-                    data={currentPost}
-                    onCloseBtn={handleCloseBtn}
-                    isMuted={isMuted}
-                    onToggleMute={handleToggleMute}
-                    onNextVideo={handleNextVideo}
-                    onPrevVideo={handlePrevVideo}
-                    onSubmit={handleSubmit}
-                    dataComment={comments}
-                    onChangeValue={handleChangeValue}
-                />
-            )}
-        </div>
-    );
-};
-
-export default Home;
+export default Home
