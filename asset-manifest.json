@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/reactjs-tiktok-app/static/css/main.cf820b2a.chunk.css",
+    "main.css": "/reactjs-tiktok-app/static/css/main.bad0063e.chunk.css",
     "main.js": "/reactjs-tiktok-app/static/js/main.76b26f83.chunk.js",
     "main.js.map": "/reactjs-tiktok-app/static/js/main.76b26f83.chunk.js.map",
     "runtime-main.js": "/reactjs-tiktok-app/static/js/runtime-main.96b380cd.js",
@@ -12,7 +12,7 @@
     "static/js/3.8703ffba.chunk.js.map": "/reactjs-tiktok-app/static/js/3.8703ffba.chunk.js.map",
     "index.html": "/reactjs-tiktok-app/index.html",
     "static/css/2.6775a049.chunk.css.map": "/reactjs-tiktok-app/static/css/2.6775a049.chunk.css.map",
-    "static/css/main.cf820b2a.chunk.css.map": "/reactjs-tiktok-app/static/css/main.cf820b2a.chunk.css.map",
+    "static/css/main.bad0063e.chunk.css.map": "/reactjs-tiktok-app/static/css/main.bad0063e.chunk.css.map",
     "static/js/2.5e1224a0.chunk.js.LICENSE.txt": "/reactjs-tiktok-app/static/js/2.5e1224a0.chunk.js.LICENSE.txt",
     "static/media/logo.b9583402.svg": "/reactjs-tiktok-app/static/media/logo.b9583402.svg"
   },
@@ -20,7 +20,7 @@
     "static/js/runtime-main.96b380cd.js",
     "static/css/2.6775a049.chunk.css",
     "static/js/2.5e1224a0.chunk.js",
-    "static/css/main.cf820b2a.chunk.css",
+    "static/css/main.bad0063e.chunk.css",
     "static/js/main.76b26f83.chunk.js"
   ]
 }
